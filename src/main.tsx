@@ -17,7 +17,3 @@ declare global {
     };
   }
 }
-
-// window.DDSM_AGENT.on('main-process-message', (_event, message) => {
-//   console.log(message);
-// });

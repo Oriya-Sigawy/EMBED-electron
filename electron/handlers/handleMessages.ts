@@ -8,6 +8,7 @@ import {
   GET_PATIENT_IDS,
   GET_PATIENTS,
   GET_PATIENT_DETAILS,
+  GET_PATIENTS_BY_FILTER,
 } from '../constants/endpoints.js';
 import { CHANNELS } from '../constants/common';
 
@@ -60,6 +61,15 @@ export default function handleMessages(): void {
   ipcMain.handle(CHANNELS.PATIENT_IMAGES_DETAILS, async (event: Electron.IpcMainInvokeEvent, patientId: string) => {
     try {
       const response = await axios.get(GET_IMAGES_DETAILS(patientId), { timeout: 60000, params: { format: 'full' } });
+      return response.data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  });
+
+  ipcMain.handle(CHANNELS.FILTER_PATIENTS, async (event: Electron.IpcMainInvokeEvent, filters) => {
+    try {
+      const response = await axios.get(GET_PATIENTS_BY_FILTER, { params: { filters: JSON.stringify(filters) } });
       return response.data;
     } catch (error) {
       throw new Error(error);
