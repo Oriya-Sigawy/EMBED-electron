@@ -21,11 +21,11 @@ export default function FilterMenu(props: FilterMenuProps) {
       <Typography variant={variant} component="h1" align="center" sx={sx}>
         {title}
       </Typography>
-      {Object.entries(headers).map(([key, value]) => (
+      {Object.entries(headers)?.map(([key, value]) => (
         <Filter
           key={key as string}
           title={value as string}
-          items={(options && options[key]) || []}
+          items={options ? options[key] : []}
           value={(values && values[key]) || []}
           onChange={(value) => handleChange(key, value)}
         />
