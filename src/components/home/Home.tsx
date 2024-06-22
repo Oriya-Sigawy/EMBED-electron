@@ -10,20 +10,16 @@ import {
   PatientFilterObject,
 } from '../../constants/filter.constant';
 import { CHANNELS } from '../../constants/common';
-import { PatientsDetails } from 'types/patient';
-import { filterPatients } from '../../utils/filter';
 import PatientContainer from '../patientContainer/patientContainer';
 
 const { DDSM_AGENT } = window;
 
 const Home = (): JSX.Element => {
-  const [patientsDetails, setPatientsDetails] = useState<PatientsDetails>();
-  const [selectedFilterOptions, setSelectedFilterOptions] = useState<FilterObject>();
-  const [selectedAbnormalityFilterOptions, setSelectedAbnormalityFilterOptions] = useState<AbnormalityFilterObject>();
-  const [selectedPatientIds, setSelectedPatientIds] = useState<PatientFilterObject>();
-  const [filterOps, setFilterOps] = useState<FilterObject>();
-  const [abnormalityFilterOps, setAbnormalityFilterOps] = useState<AbnormalityFilterObject>();
-  const [patientOps, setPatientOps] = useState<PatientFilterObject>();
+  const [filtersMenu, setFiltersMenu] = useState({ options: {}, selected: {} });
+  const [abnormalityFilterMenu, setAbnormalityFilterMenu] = useState({ options: {}, selected: {} });
+  const [patientIdsFilterMenu, setPatientIdsFilterMenu] = useState({ options: {}, selected: {} });
+  const [patientsIds, setPatientsIds] = useState<string[]>();
+  const [currentPatientIds, setCurrentPatientIds] = useState<string[]>();
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [pageCount, setPageCount] = useState<number>(1);
 
@@ -31,76 +27,82 @@ const Home = (): JSX.Element => {
     const getFilterOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.FILTER_OPTIONS);
       const options: FilterObject = JSON.parse(response);
-      setFilterOps(options);
+      setFiltersMenu((prev) => {
+        return {
+          ...prev,
+          ['options']: options,
+        };
+      });
     };
 
     const getAbnormalityFilterOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.ABNORMALITY_FILTER_OPTIONS);
       const options: AbnormalityFilterObject = JSON.parse(response);
-      setAbnormalityFilterOps(options);
+      setAbnormalityFilterMenu((prev) => {
+        return {
+          ...prev,
+          ['options']: options,
+        };
+      });
     };
 
     const getPatientOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IDS);
       const options: PatientFilterObject = JSON.parse(response);
-      setPatientOps(options);
-    };
+      setPatientIdsFilterMenu((prev) => {
+        return {
+          ...prev,
+          ['options']: options,
+        };
+      });
 
-    const getPatientsDetails = async () => {
-      const patients: PatientsDetails = await DDSM_AGENT.send(CHANNELS.PATIENTS);
-      setPatientsDetails(patients);
-
-      setPageCount(Object.keys(patients).length / 2);
+      if (!patientsIds && options.patientsIds) {
+        setPatientsIds(options.patientsIds);
+        setPageCount(options.patientsIds.length / 2);
+        setCurrentPatientIds(options.patientsIds.slice(0, 2));
+      }
     };
 
     getFilterOptions();
     getAbnormalityFilterOptions();
     getPatientOptions();
-    getPatientsDetails();
   }, []);
 
-  const handleFilterChange = useCallback((value) => {
-    if (!value || Object.keys(value).length === 0) {
-      return setSelectedFilterOptions(null);
-    }
-    setSelectedFilterOptions(value);
-  }, []);
-
-  const handleAbnormalityFilterChange = useCallback((value) => {
-    if (!value || Object.keys(value).length === 0) {
-      return setSelectedAbnormalityFilterOptions(null);
-    }
-    setSelectedAbnormalityFilterOptions(value);
-  }, []);
-
-  const handlePatientChange = useCallback((value) => {
-    if (!value || Object.keys(value).length === 0) {
-      return setSelectedPatientIds(null);
-    }
-    setSelectedPatientIds(value);
+  const handleFilterChange = useCallback((menu, value) => {
+    const menus = {
+      filters: setFiltersMenu,
+      abnormality: setAbnormalityFilterMenu,
+      patientsIds: setPatientIdsFilterMenu,
+    };
+    menus[menu]((prev) => {
+      const options = prev.options;
+      return {
+        ['options']: options,
+        ['selected']: !value || Object.keys(value).length === 0 ? null : value,
+      };
+    });
   }, []);
 
   const isDisabled = useMemo(() => {
-    return !selectedFilterOptions && !selectedAbnormalityFilterOptions && !selectedPatientIds;
-  }, [selectedFilterOptions, selectedAbnormalityFilterOptions, selectedPatientIds]);
+    return !filtersMenu.selected && !abnormalityFilterMenu.selected && !patientIdsFilterMenu.selected;
+  }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
 
-  const patientIds = useMemo(() => {
-    if (!patientsDetails) return [];
-    const index = (pageIndex - 1) * 2;
-    return Object.keys(patientsDetails).slice(index, index + 2);
-  }, [patientsDetails, pageIndex]);
-
-  const onApply = useCallback(() => {
+  const onApply = useCallback(async () => {
     const filters = {
-      filterOptions: selectedFilterOptions,
-      abnormalityFilter: selectedAbnormalityFilterOptions,
-      patientIds: selectedPatientIds,
+      filterOptions: filtersMenu.selected || {},
+      abnormalityFilter: abnormalityFilterMenu.selected || {},
+      patientIds: patientIdsFilterMenu.selected || {},
     };
-    filterPatients(patientsDetails, filters);
-    setPatientsDetails(patientsDetails);
-  }, [selectedFilterOptions, selectedAbnormalityFilterOptions, selectedPatientIds]);
+
+    const response = await DDSM_AGENT.send(CHANNELS.FILTER_PATIENTS, filters);
+    const patients: PatientFilterObject = JSON.parse(response);
+    setPatientsIds(patients.patientsIds);
+    setCurrentPatientIds(patients.patientsIds.slice(0, 2));
+  }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
 
   const handlePageChange = useCallback((event, value) => {
+    const index = (value - 1) * 2;
+    setCurrentPatientIds(patientsIds?.slice(index, index + 2));
     setPageIndex(value);
   }, []);
 
@@ -119,9 +121,9 @@ const Home = (): JSX.Element => {
               }}
               title="Filters"
               headers={FiltersMenuHeaders}
-              options={filterOps}
-              values={selectedFilterOptions}
-              onChange={handleFilterChange}
+              options={filtersMenu.options}
+              values={filtersMenu.selected}
+              onChange={(value) => handleFilterChange('filters', value)}
             />
           </Grid>
           <Grid item xs={1}>
@@ -130,18 +132,18 @@ const Home = (): JSX.Element => {
               sx={{ paddingBlock: 1, background: '#4dabf5', borderRadius: 4, marginRight: 2 }}
               title="Abnormality Params"
               headers={AbnormalityFilterMenuHeaders}
-              options={abnormalityFilterOps}
-              values={selectedAbnormalityFilterOptions}
-              onChange={handleAbnormalityFilterChange}
+              options={abnormalityFilterMenu.options}
+              values={abnormalityFilterMenu.selected}
+              onChange={(value) => handleFilterChange('abnormality', value)}
             />
             <FilterMenu
               variant={'h5'}
               sx={{ marginTop: 4, paddingBlock: 2, background: '#4dabf5', borderRadius: 4, marginRight: 2 }}
               title="Patients"
               headers={{ patientsIds: 'Patients Ids' }}
-              options={patientOps}
-              values={selectedPatientIds}
-              onChange={handlePatientChange}
+              options={patientIdsFilterMenu.options}
+              values={patientIdsFilterMenu.selected}
+              onChange={(value) => handleFilterChange('patientsIds', value)}
             />
             <Button
               variant="contained"
@@ -156,7 +158,8 @@ const Home = (): JSX.Element => {
       </Grid>
       <Grid item xs={8} sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         <div>
-          {patientIds && patientIds?.map((patientId) => <PatientContainer key={patientId} patientId={patientId} />)}
+          {currentPatientIds &&
+            currentPatientIds?.map((patientId) => <PatientContainer key={patientId} patientId={patientId} />)}
         </div>
         <div style={{ display: 'flex', position: 'fixed', right: 0, bottom: 6, margin: 2 }}>
           <Pagination count={pageCount} page={pageIndex} onChange={handlePageChange} size="small" />
