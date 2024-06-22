@@ -32,7 +32,7 @@ export default function Filter(props: FilterMenu) {
           input={<OutlinedInput notched label={title} id="outlined-age-native-simple" />}
           renderValue={(selected) => (selected as string[]).join(', ')}
           MenuProps={FilterMenuProps}>
-          {items.map((item) => (
+          {items?.map((item) => (
             <MenuItem key={item} value={item} sx={{ fontSize: 4 }}>
               <Checkbox checked={value?.indexOf(item) > -1} size="small" />
               <ListItemText primary={item} sx={{ fontSize: 4 }} />
