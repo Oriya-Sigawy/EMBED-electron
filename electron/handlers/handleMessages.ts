@@ -78,11 +78,11 @@ export default function handleMessages(): void {
 
   ipcMain.handle(CHANNELS.PATIENT_IMAGE, async (event: Electron.IpcMainInvokeEvent, data) => {
     try {
-      const { seriesUID, SOPUID } = data;
+      const { seriesUID, sopUID } = data;
       const response = await axios.get(GET_IMAGE, {
         responseType: 'arraybuffer',
         timeout: 60000,
-        params: { series_UID: seriesUID, sop_uid: SOPUID },
+        params: { series_UID: seriesUID, sop_uid: sopUID },
       });
       return response.data;
     } catch (error) {

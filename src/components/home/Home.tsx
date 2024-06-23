@@ -19,9 +19,7 @@ const Home = (): JSX.Element => {
   const [abnormalityFilterMenu, setAbnormalityFilterMenu] = useState({ options: {}, selected: {} });
   const [patientIdsFilterMenu, setPatientIdsFilterMenu] = useState({ options: {}, selected: {} });
   const [patientsIds, setPatientsIds] = useState<string[]>();
-  const [currentPatientIds, setCurrentPatientIds] = useState<string[]>();
   const [pageIndex, setPageIndex] = useState<number>(1);
-  const [pageCount, setPageCount] = useState<number>(1);
 
   useEffect(() => {
     const getFilterOptions = async () => {
@@ -58,8 +56,7 @@ const Home = (): JSX.Element => {
 
       if (!patientsIds && options.patientsIds) {
         setPatientsIds(options.patientsIds);
-        setPageCount(options.patientsIds.length / 2);
-        setCurrentPatientIds(options.patientsIds.slice(0, 2));
+        console.log('patientsIds', options.patientsIds);
       }
     };
 
@@ -83,10 +80,6 @@ const Home = (): JSX.Element => {
     });
   }, []);
 
-  const isDisabled = useMemo(() => {
-    return !filtersMenu.selected && !abnormalityFilterMenu.selected && !patientIdsFilterMenu.selected;
-  }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
-
   const onApply = useCallback(async () => {
     const filters = {
       filterOptions: filtersMenu.selected || {},
@@ -97,14 +90,24 @@ const Home = (): JSX.Element => {
     const response = await DDSM_AGENT.send(CHANNELS.FILTER_PATIENTS, filters);
     const patients: PatientFilterObject = JSON.parse(response);
     setPatientsIds(patients.patientsIds);
-    setCurrentPatientIds(patients.patientsIds.slice(0, 2));
   }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
 
   const handlePageChange = useCallback((event, value) => {
-    const index = (value - 1) * 2;
-    setCurrentPatientIds(patientsIds?.slice(index, index + 2));
     setPageIndex(value);
   }, []);
+
+  const isDisabled = useMemo(() => {
+    return !filtersMenu.selected && !abnormalityFilterMenu.selected && !patientIdsFilterMenu.selected;
+  }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
+
+  const pageCount = useMemo(() => {
+    return patientsIds?.length / 2 || 1;
+  }, [patientsIds]);
+
+  const currentPatients = useMemo(() => {
+    const index = (pageIndex - 1) * 2;
+    return patientsIds?.slice(index, index + 2);
+  }, [patientsIds, pageIndex, handlePageChange]);
 
   return (
     <Grid container>
@@ -158,8 +161,8 @@ const Home = (): JSX.Element => {
       </Grid>
       <Grid item xs={8} sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         <div>
-          {currentPatientIds &&
-            currentPatientIds?.map((patientId) => <PatientContainer key={patientId} patientId={patientId} />)}
+          {currentPatients &&
+            currentPatients?.map((patientId) => <PatientContainer key={patientId} patientId={patientId} />)}
         </div>
         <div style={{ display: 'flex', position: 'fixed', right: 0, bottom: 6, margin: 2 }}>
           <Pagination count={pageCount} page={pageIndex} onChange={handlePageChange} size="small" />
