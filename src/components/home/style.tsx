@@ -1,9 +1,24 @@
-import { Paper, styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
-export const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
+export const BoxStyled = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  flexDirection: 'row',
+  margin: theme.spacing(0),
+  padding: theme.spacing(0),
+}));
+
+export const BoxFilterSectionStyled = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  width: '30%',
+  backgroundColor: theme.palette.grey[100],
+}));
+
+export const BoxContentSectionStyled = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  flexDirection: 'column',
+  margin: theme.spacing(1),
+  padding: theme.spacing(0),
+  width: '65%',
 }));
