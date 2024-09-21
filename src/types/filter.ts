@@ -1,5 +1,4 @@
 export type FilterMenu = {
-  key: string;
   title: string;
   items: string[];
   value: string[];
