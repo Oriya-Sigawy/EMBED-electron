@@ -1,23 +1,18 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import { Grid, Pagination } from '@mui/material';
-import FilterMenu from '../FilterMenu/FilterMenu';
-import Button from '../button/Button';
-import {
-  FiltersMenuHeaders,
-  AbnormalityFilterMenuHeaders,
-  AbnormalityFilterObject,
-  FilterObject,
-  PatientFilterObject,
-} from '../../constants/filter.constant';
+import { CircularProgress } from '@mui/material';
+import { AbnormalityFilterObject, FilterObject, PatientFilterObject } from '../../constants/filter.constant';
 import { CHANNELS } from '../../constants/common';
-import PatientContainer from '../patientContainer/patientContainer';
+import FilterSection from '../filterSection/FilterSection';
+import PatientSection from '../patientsSection/PatientsSection';
+import { BoxStyled, BoxFilterSectionStyled, BoxContentSectionStyled } from './style';
 
 const { DDSM_AGENT } = window;
 
-const Home = (): JSX.Element => {
-  const [filtersMenu, setFiltersMenu] = useState({ options: {}, selected: {} });
-  const [abnormalityFilterMenu, setAbnormalityFilterMenu] = useState({ options: {}, selected: {} });
-  const [patientIdsFilterMenu, setPatientIdsFilterMenu] = useState({ options: {}, selected: {} });
+export default function Home() {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [filtersMenuOptions, setFiltersMenuOptions] = useState<FilterObject>();
+  const [abnormalityFilterMenuOptions, setAbnormalityFilterMenuOptions] = useState<AbnormalityFilterObject>();
+  const [patientIdsFilterMenuOptions, setPatientIdsFilterMenuOptions] = useState<PatientFilterObject>();
   const [patientsIds, setPatientsIds] = useState<string[]>();
   const [pageIndex, setPageIndex] = useState<number>(1);
 
@@ -25,39 +20,24 @@ const Home = (): JSX.Element => {
     const getFilterOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.FILTER_OPTIONS);
       const options: FilterObject = JSON.parse(response);
-      setFiltersMenu((prev) => {
-        return {
-          ...prev,
-          ['options']: options,
-        };
-      });
+      setFiltersMenuOptions(options);
     };
 
     const getAbnormalityFilterOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.ABNORMALITY_FILTER_OPTIONS);
       const options: AbnormalityFilterObject = JSON.parse(response);
-      setAbnormalityFilterMenu((prev) => {
-        return {
-          ...prev,
-          ['options']: options,
-        };
-      });
+      setAbnormalityFilterMenuOptions(options);
     };
 
     const getPatientOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IDS);
       const options: PatientFilterObject = JSON.parse(response);
-      setPatientIdsFilterMenu((prev) => {
-        return {
-          ...prev,
-          ['options']: options,
-        };
-      });
+      setPatientIdsFilterMenuOptions(options);
 
       if (!patientsIds && options.patientsIds) {
         setPatientsIds(options.patientsIds);
-        console.log('patientsIds', options.patientsIds);
       }
+      setLoading(false);
     };
 
     getFilterOptions();
@@ -65,43 +45,18 @@ const Home = (): JSX.Element => {
     getPatientOptions();
   }, []);
 
-  const handleFilterChange = useCallback((menu, value) => {
-    const menus = {
-      filters: setFiltersMenu,
-      abnormality: setAbnormalityFilterMenu,
-      patientsIds: setPatientIdsFilterMenu,
-    };
-    menus[menu]((prev) => {
-      const options = prev.options;
-      return {
-        ['options']: options,
-        ['selected']: !value || Object.keys(value).length === 0 ? null : value,
-      };
-    });
-  }, []);
-
-  const onApply = useCallback(async () => {
-    const filters = {
-      filterOptions: filtersMenu.selected || {},
-      abnormalityFilter: abnormalityFilterMenu.selected || {},
-      patientIds: patientIdsFilterMenu.selected || {},
-    };
-
+  const onApplyFilter = useCallback(async (filters) => {
     const response = await DDSM_AGENT.send(CHANNELS.FILTER_PATIENTS, filters);
     const patients: PatientFilterObject = JSON.parse(response);
     setPatientsIds(patients.patientsIds);
-  }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
+  }, []);
 
   const handlePageChange = useCallback((event, value) => {
     setPageIndex(value);
   }, []);
 
-  const isDisabled = useMemo(() => {
-    return !filtersMenu.selected && !abnormalityFilterMenu.selected && !patientIdsFilterMenu.selected;
-  }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
-
   const pageCount = useMemo(() => {
-    return patientsIds?.length / 2 || 1;
+    return Math.ceil(patientsIds?.length / 2) || 1;
   }, [patientsIds]);
 
   const currentPatients = useMemo(() => {
@@ -110,66 +65,27 @@ const Home = (): JSX.Element => {
   }, [patientsIds, pageIndex, handlePageChange]);
 
   return (
-    <Grid container>
-      <Grid item xs={4}>
-        <Grid container columns={2} sx={{ margin: 0 }}>
-          <Grid item xs={1}>
-            <FilterMenu
-              variant={'h5'}
-              sx={{
-                background: '#4dabf5',
-                borderRadius: 4,
-                marginRight: 2,
-                paddingBlock: 3,
-              }}
-              title="Filters"
-              headers={FiltersMenuHeaders}
-              options={filtersMenu.options}
-              values={filtersMenu.selected}
-              onChange={(value) => handleFilterChange('filters', value)}
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <FilterMenu
-              variant={'h6'}
-              sx={{ paddingBlock: 1, background: '#4dabf5', borderRadius: 4, marginRight: 2 }}
-              title="Abnormality Params"
-              headers={AbnormalityFilterMenuHeaders}
-              options={abnormalityFilterMenu.options}
-              values={abnormalityFilterMenu.selected}
-              onChange={(value) => handleFilterChange('abnormality', value)}
-            />
-            <FilterMenu
-              variant={'h5'}
-              sx={{ marginTop: 4, paddingBlock: 2, background: '#4dabf5', borderRadius: 4, marginRight: 2 }}
-              title="Patients"
-              headers={{ patientsIds: 'Patients Ids' }}
-              options={patientIdsFilterMenu.options}
-              values={patientIdsFilterMenu.selected}
-              onChange={(value) => handleFilterChange('patientsIds', value)}
-            />
-            <Button
-              variant="contained"
-              size="small"
-              title="Apply"
-              disabled={isDisabled}
-              sx={{ marginTop: 4 }}
-              onClick={onApply}
-            />
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={8} sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        <div>
-          {currentPatients &&
-            currentPatients?.map((patientId) => <PatientContainer key={patientId} patientId={patientId} />)}
-        </div>
-        <div style={{ display: 'flex', position: 'fixed', right: 0, bottom: 6, margin: 2 }}>
-          <Pagination count={pageCount} page={pageIndex} onChange={handlePageChange} size="small" />
-        </div>
-      </Grid>
-    </Grid>
+    <BoxStyled id="home-container">
+      <BoxFilterSectionStyled id="filter-section-container">
+        <FilterSection
+          filtersMenuOptions={filtersMenuOptions}
+          abnormalityFilterMenuOptions={abnormalityFilterMenuOptions}
+          patientIdsFilterMenuOptions={patientIdsFilterMenuOptions}
+          handleFilterApply={onApplyFilter}
+        />
+      </BoxFilterSectionStyled>
+      <BoxContentSectionStyled id="patient-section-container">
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <PatientSection
+            patientIds={currentPatients}
+            pageCount={pageCount}
+            pageIndex={pageIndex}
+            handlePageChange={handlePageChange}
+          />
+        )}
+      </BoxContentSectionStyled>
+    </BoxStyled>
   );
-};
-
-export default Home;
+}
