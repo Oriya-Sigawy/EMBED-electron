@@ -7,9 +7,17 @@ export type SeriesMetadata = {
 
 export type ImageMetadata = Record<string, SeriesMetadata>;
 
+export type Metadata = {
+  imagesMetadata: ImageMetadata;
+  imageCount: number;
+};
+
 export type PatientImages = {
-  class: string;
+  id?: number;
+  seriesUID?: string;
+  sopUID?: string;
+  class?: string;
   imageView: string;
   leftOrRightBreast: string;
-  image: string;
+  imageFilePath: string;
 };

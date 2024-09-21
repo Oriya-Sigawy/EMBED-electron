@@ -36,8 +36,6 @@ export type FiltersProps = {
 };
 
 export type FilterMenuProps = {
-  variant: any;
-  sx: any;
   title: string;
   headers: any;
   options: any;

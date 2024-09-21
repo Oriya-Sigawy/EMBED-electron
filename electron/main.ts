@@ -37,6 +37,8 @@ export default async function createWindow(): Promise<void> {
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
+    minWidth: 1024,
+    minHeight: 768,
     webPreferences: {
       preload: preload,
     },
