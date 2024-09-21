@@ -59,6 +59,12 @@ export default function FilterSection(props: FilterSectionProps) {
     handleFilterApply(filters);
   }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
 
+  const onReset = useCallback(async () => {
+    setFiltersMenu({ options: filtersMenuOptions, selected: {} });
+    setAbnormalityFilterMenu({ options: abnormalityFilterMenuOptions, selected: {} });
+    setPatientIdsFilterMenu({ options: patientIdsFilterMenuOptions, selected: {} });
+  }, [filtersMenuOptions, abnormalityFilterMenuOptions, patientIdsFilterMenuOptions]);
+
   const isDisabled = useMemo(() => {
     const filterEmpty = !filtersMenu.selected || Object.keys(filtersMenu.selected).length === 0;
     const abnormalityEmpty =
@@ -100,6 +106,14 @@ export default function FilterSection(props: FilterSectionProps) {
           disabled={isDisabled}
           sx={{ marginTop: 4 }}
           onClick={onApply}
+        />
+        <Button
+          variant="outlined"
+          size="small"
+          title="Reset"
+          disabled={isDisabled}
+          sx={{ marginTop: 2 }}
+          onClick={onReset}
         />
       </BoxOthersMenuStyled>
     </BoxFilterSectionStyled>
