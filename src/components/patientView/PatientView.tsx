@@ -1,7 +1,10 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button as MuiButton } from '@mui/material';
+import { Button } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
+import PatientContainer from '../patientContainer/PatientContainer';
+import ClassificationSection from '../classificationSection/ClassificationSection';
+import { BoxClassificationSectionStyled, BoxContentSectionStyled, BoxStyled } from './style';
 
 export default function PatientView() {
   const { patientId } = useParams();
@@ -11,20 +14,20 @@ export default function PatientView() {
     navigate(`/`);
   };
 
-  const getPatientDetails = (patientId: string) => {
-    return `Patient ID: ${patientId}`;
-  };
-
-  const patientDetails = getPatientDetails(patientId);
-
   return (
-    <div>
-      <MuiButton size="medium" onClick={goToHome}>
+    <>
+      <Button size="medium" onClick={goToHome}>
         <ArrowBack />
         Back
-      </MuiButton>
-      <h2>Patient {patientId.split('_')[1]}</h2>
-      <div>{patientDetails}</div>
-    </div>
+      </Button>
+      <BoxStyled>
+        <BoxClassificationSectionStyled>
+          <ClassificationSection patientId={patientId} />
+        </BoxClassificationSectionStyled>
+        <BoxContentSectionStyled>
+          <PatientContainer patientId={patientId} showPatientID={false} goToPatientView={() => {}} />
+        </BoxContentSectionStyled>
+      </BoxStyled>
+    </>
   );
 }

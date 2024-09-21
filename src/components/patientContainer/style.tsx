@@ -1,34 +1,37 @@
-import { ImageList, ImageListItem, styled } from '@mui/material';
+import { Box, ImageList, ImageListItem, styled, Button } from '@mui/material';
 
-export const ContainerStyled = styled('div')({
+export const ContainerStyled = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  height: '25%',
-  boxSizing: 'border-box',
-  marginBottom: 24,
-});
+  flexWrap: 'wrap',
+  borderColor: theme.palette.secondary.main,
+  borderWidth: 4,
+  margin: theme.spacing(1),
+}));
 
-export const TitleStyled = styled('h6')(({ theme }) => ({
-  fontSize: theme.typography.h6.fontSize,
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: theme.typography.fontWeightLight,
-  color: theme.palette.text.primary,
+export const TitleButtonStyled = styled(Button)(({ theme }) => ({
+  display: 'flex',
   textAlign: 'center',
-  backgroundColor: theme.palette.primary.main,
-  width: '100%',
-  marginTop: 0,
-  marginBottom: 8,
-  padding: 12,
+  justifyContent: 'center',
+  padding: theme.spacing(1),
+  marginBottom: theme.spacing(1),
+  background: theme.palette.primary.light,
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: theme.typography.fontWeightBold,
+  fontSize: theme.typography.h6.fontSize,
+  color: theme.palette.primary.contrastText,
+  borderRadius: 4,
+  height: 50,
 }));
 
 export const ImageListStyled = styled(ImageList)({
   flexDirection: 'row',
   flexWrap: 'wrap',
   justifyContent: 'center',
-  overflow: 'hidden',
   borderRadius: 4,
   padding: 0,
   margin: 0,
+  height: '80%',
 });
 
 export const ImageListItemStyled = styled(ImageListItem)({

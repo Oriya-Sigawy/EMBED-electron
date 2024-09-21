@@ -1,13 +1,23 @@
-import { FormControl, InputLabel, styled } from '@mui/material';
+import { Autocomplete, InputLabel, MenuItem, styled } from '@mui/material';
 
-export const RootStyled = styled(FormControl)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-  marginBottom: theme.spacing(2),
-  width: 150,
-  height: 25,
+export const AutocompleteStyled = styled(Autocomplete)(({ theme }) => ({
+  display: 'flex',
+  marginTop: theme.spacing(2),
+  padding: theme.spacing(1),
+  overflow: 'scroll',
+  backgroundColor: theme.palette.background.default,
+  scrollbarWidth: 'thin',
+}));
+
+export const MenuItemStyled = styled(MenuItem)(({ theme }) => ({
+  margin: theme.spacing(0),
+  padding: theme.spacing(0),
+  fontSize: theme.typography.body2.fontSize,
 }));
 
 export const InputLabelStyled = styled(InputLabel)(({ theme }) => ({
   overflow: 'hidden',
-  fontSize: 14,
+  margin: theme.spacing(0),
+  padding: theme.spacing(0),
+  fontSize: theme.typography.body2.fontSize,
 }));

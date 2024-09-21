@@ -22,7 +22,12 @@ export default function PatientSection(props: PatientSectionProps) {
       <Box id="patient-section-patients-container" sx={{ flexWrap: 'wrap', flexDirection: 'row', width: '100%' }}>
         {patientIds &&
           patientIds.map((patientId) => (
-            <PatientContainer key={patientId} patientId={patientId} goToPatientView={goToPatientView} />
+            <PatientContainer
+              key={patientId}
+              patientId={patientId}
+              showPatientID={true}
+              goToPatientView={goToPatientView}
+            />
           ))}
       </Box>
       <Box sx={{ display: 'flex', position: 'fixed', right: 0, bottom: 6, m: 2 }}>

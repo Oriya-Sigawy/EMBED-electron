@@ -1,10 +1,10 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
 import Filter from '../filter/Filter';
 import { FilterMenuProps } from '../../types/filter';
+import { BoxStyled, TitleStyled } from './style';
 
 export default function FilterMenu(props: FilterMenuProps) {
-  const { variant, sx, title, headers, options, values, onChange } = props;
+  const { title, headers, options, values, onChange } = props;
 
   const handleChange = (key, value) => {
     let newValues = { ...values };
@@ -17,10 +17,8 @@ export default function FilterMenu(props: FilterMenuProps) {
   };
 
   return (
-    <Box>
-      <Typography variant={variant} component="h1" align="center" sx={sx}>
-        {title}
-      </Typography>
+    <BoxStyled>
+      <TitleStyled>{title}</TitleStyled>
       {Object.entries(headers)?.map(([key, value]) => (
         <Filter
           key={key as string}
@@ -30,6 +28,6 @@ export default function FilterMenu(props: FilterMenuProps) {
           onChange={(value) => handleChange(key, value)}
         />
       ))}
-    </Box>
+    </BoxStyled>
   );
 }
