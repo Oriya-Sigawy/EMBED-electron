@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import FilterMenu from '../FilterMenu/FilterMenu';
+import FilterMenu from '../filterMenu/FilterMenu';
 import Button from '../button/Button';
 import {
   FiltersMenuHeaders,
@@ -8,7 +8,11 @@ import {
   AbnormalityFilterObject,
   PatientFilterObject,
 } from '../../constants/filter.constant';
-import { BoxFilterMenuStyled, BoxFilterSectionStyled, BoxOthersMenuStyled } from './style';
+import { BoxFilterMenuStyled } from './style';
+import QuerySaveDialog from '../querySaveDialog/QuerySaveDialog';
+import { CHANNELS } from '../../constants/common';
+
+const { DDSM_AGENT } = window;
 
 type FilterSectionProps = {
   filtersMenuOptions: FilterObject;
@@ -28,6 +32,7 @@ export default function FilterSection(props: FilterSectionProps) {
     options: {},
     selected: {},
   });
+  const [isSaveQueryPopupOpen, setIsSaveQueryPopupOpen] = useState(false);
 
   useEffect(() => {
     setFiltersMenu({ options: filtersMenuOptions, selected: {} });
@@ -65,6 +70,26 @@ export default function FilterSection(props: FilterSectionProps) {
     setPatientIdsFilterMenu({ options: patientIdsFilterMenuOptions, selected: {} });
   }, [filtersMenuOptions, abnormalityFilterMenuOptions, patientIdsFilterMenuOptions]);
 
+  const onQuerySave = useCallback(
+    async (queryName: string) => {
+      const filters = {
+        filterOptions: filtersMenu.selected || {},
+        abnormalityFilter: abnormalityFilterMenu.selected || {},
+        patientIds: patientIdsFilterMenu.selected || {},
+      };
+
+      if (queryName) {
+        const response = await DDSM_AGENT.send(CHANNELS.SAVE_QUERY, { queryName, filters });
+        if (response === 'success') {
+          alert(`Query saved successfully as "${queryName}.json" in the "savedQueries" folder.`);
+        } else {
+          alert('Saving query was canceled.');
+        }
+      }
+    },
+    [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]
+  );
+
   const isDisabled = useMemo(() => {
     const filterEmpty = !filtersMenu.selected || Object.keys(filtersMenu.selected).length === 0;
     const abnormalityEmpty =
@@ -74,8 +99,8 @@ export default function FilterSection(props: FilterSectionProps) {
   }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
 
   return (
-    <BoxFilterSectionStyled>
-      <BoxFilterMenuStyled>
+    <>
+      <BoxFilterMenuStyled id="filter-menu-filter-section">
         <FilterMenu
           title="Filters"
           headers={FiltersMenuHeaders}
@@ -84,7 +109,7 @@ export default function FilterSection(props: FilterSectionProps) {
           onChange={(value) => handleFilterChange('filters', value)}
         />
       </BoxFilterMenuStyled>
-      <BoxOthersMenuStyled>
+      <BoxFilterMenuStyled id="other-filter-menu-filter-section">
         <FilterMenu
           title="Abnormality Params"
           headers={AbnormalityFilterMenuHeaders}
@@ -104,7 +129,7 @@ export default function FilterSection(props: FilterSectionProps) {
           size="small"
           title="Apply"
           disabled={isDisabled}
-          sx={{ marginTop: 4 }}
+          sx={{ margin: 2 }}
           onClick={onApply}
         />
         <Button
@@ -112,10 +137,23 @@ export default function FilterSection(props: FilterSectionProps) {
           size="small"
           title="Reset"
           disabled={isDisabled}
-          sx={{ marginTop: 2 }}
+          sx={{ margin: 2 }}
           onClick={onReset}
         />
-      </BoxOthersMenuStyled>
-    </BoxFilterSectionStyled>
+        <Button
+          variant="outlined"
+          size="small"
+          title="Save Query"
+          disabled={isDisabled}
+          sx={{ margin: 2 }}
+          onClick={() => setIsSaveQueryPopupOpen(true)}
+        />
+      </BoxFilterMenuStyled>
+      <QuerySaveDialog
+        open={isSaveQueryPopupOpen}
+        onClose={() => setIsSaveQueryPopupOpen(false)}
+        onSave={onQuerySave}
+      />
+    </>
   );
 }

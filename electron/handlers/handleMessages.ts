@@ -11,6 +11,12 @@ import {
   GET_PATIENTS_BY_FILTER,
 } from '../constants/endpoints.js';
 import { CHANNELS } from '../constants/common';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default function handleMessages(): void {
   ipcMain.handle(CHANNELS.FILTER_OPTIONS, async () => {
@@ -87,6 +93,24 @@ export default function handleMessages(): void {
       return response.data;
     } catch (error) {
       throw new Error(error);
+    }
+  });
+
+  ipcMain.handle(CHANNELS.SAVE_QUERY, async (event: Electron.IpcMainInvokeEvent, value) => {
+    try {
+      const folderPath = path.join(__dirname, 'savedQueries');
+
+      if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath);
+      }
+
+      const filePath = path.join(folderPath, `${value.queryName}.json`);
+      const data = JSON.stringify(value.filters, null, 2);
+      fs.writeFileSync(filePath, data, 'utf-8');
+      return 'success';
+    } catch (error) {
+      console.error(error);
+      return 'error';
     }
   });
 }

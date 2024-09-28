@@ -10,7 +10,11 @@ export const BoxStyled = styled(Box)(({ theme }) => ({
 
 export const BoxFilterSectionStyled = styled(Box)(({ theme }) => ({
   display: 'flex',
-  width: '30%',
+  flexWrap: 'wrap',
+  flexDirection: 'row',
+  margin: theme.spacing(1),
+  padding: theme.spacing(0),
+  width: '35%',
   backgroundColor: theme.palette.grey[100],
 }));
 
@@ -20,5 +24,5 @@ export const BoxContentSectionStyled = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   margin: theme.spacing(1),
   padding: theme.spacing(0),
-  width: '65%',
+  width: '60%',
 }));
