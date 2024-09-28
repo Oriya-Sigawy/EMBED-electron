@@ -5,6 +5,7 @@ import { CHANNELS } from '../../constants/common';
 import FilterSection from '../filterSection/FilterSection';
 import PatientSection from '../patientsSection/PatientsSection';
 import { BoxStyled, BoxFilterSectionStyled, BoxContentSectionStyled } from './style';
+import MenuDrawer from '../menuDrawer/MenuDrawer';
 
 const { DDSM_AGENT } = window;
 
@@ -65,27 +66,30 @@ export default function Home() {
   }, [patientsIds, pageIndex, handlePageChange]);
 
   return (
-    <BoxStyled id="home-container">
-      <BoxFilterSectionStyled id="filter-section-container">
-        <FilterSection
-          filtersMenuOptions={filtersMenuOptions}
-          abnormalityFilterMenuOptions={abnormalityFilterMenuOptions}
-          patientIdsFilterMenuOptions={patientIdsFilterMenuOptions}
-          handleFilterApply={onApplyFilter}
-        />
-      </BoxFilterSectionStyled>
-      <BoxContentSectionStyled id="patient-section-container">
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <PatientSection
-            patientIds={currentPatients}
-            pageCount={pageCount}
-            pageIndex={pageIndex}
-            handlePageChange={handlePageChange}
+    <>
+      <MenuDrawer />
+      <BoxStyled id="home-container">
+        <BoxFilterSectionStyled id="filter-section-container">
+          <FilterSection
+            filtersMenuOptions={filtersMenuOptions}
+            abnormalityFilterMenuOptions={abnormalityFilterMenuOptions}
+            patientIdsFilterMenuOptions={patientIdsFilterMenuOptions}
+            handleFilterApply={onApplyFilter}
           />
-        )}
-      </BoxContentSectionStyled>
-    </BoxStyled>
+        </BoxFilterSectionStyled>
+        <BoxContentSectionStyled id="patient-section-container">
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <PatientSection
+              patientIds={currentPatients}
+              pageCount={pageCount}
+              pageIndex={pageIndex}
+              handlePageChange={handlePageChange}
+            />
+          )}
+        </BoxContentSectionStyled>
+      </BoxStyled>
+    </>
   );
 }
