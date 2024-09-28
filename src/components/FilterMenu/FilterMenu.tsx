@@ -17,7 +17,7 @@ export default function FilterMenu(props: FilterMenuProps) {
   };
 
   return (
-    <BoxStyled>
+    <BoxStyled id={`${title.toLowerCase()}-filter-menu`}>
       <TitleStyled>{title}</TitleStyled>
       {Object.entries(headers)?.map(([key, value]) => (
         <Filter

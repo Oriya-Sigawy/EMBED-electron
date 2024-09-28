@@ -1,6 +1,10 @@
 import { Box, Typography, styled } from '@mui/material';
 
 export const BoxStyled = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  flexDirection: 'column',
+  width: '100%',
   margin: theme.spacing(1),
 }));
 
