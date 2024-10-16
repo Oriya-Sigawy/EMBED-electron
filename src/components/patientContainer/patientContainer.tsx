@@ -3,7 +3,7 @@ import { CircularProgress } from '@mui/material';
 import { CHANNELS } from '../../constants/common';
 import { ContainerStyled, TitleButtonStyled, ImageListStyled } from './style';
 import { ImageMetadata, Metadata, SeriesMetadata } from 'types/image';
-import ImageContainer from '../imageContainer/ImageContainer';
+import ImageContainer from '../imageContainer/imageContainer';
 
 type PatientContainerProps = {
   patientId: string;
@@ -32,6 +32,7 @@ export default function PatientContainer(props: PatientContainerProps) {
       };
 
       const metadata: Metadata = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGES_DETAILS, data);
+      console.log(metadata);
       setMetadata(metadata.imagesMetadata);
       setImageCount(metadata.imageCount);
       setLoading(false);
