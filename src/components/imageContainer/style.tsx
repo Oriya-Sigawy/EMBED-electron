@@ -20,20 +20,14 @@ export const TitleStyled = styled(Typography)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
 }));
 
-export const ImageListItemStyled = styled(ImageListItem)(({ theme }) => ({
+export const ImageListItemStyled = styled(ImageListItem)(() => ({
   overflow: 'hidden',
-  cursor: 'pointer',
   justifyContent: 'center',
   borderRadius: 4,
   borderWidth: 1,
-  '&:hover': {
-    boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.1)',
-    borderRadius: 4,
-  },
 }));
 
 export const ImageStyled = styled('img')({
   objectFit: 'scale-down',
   height: '250px',
-  cursor: 'pointer',
 });

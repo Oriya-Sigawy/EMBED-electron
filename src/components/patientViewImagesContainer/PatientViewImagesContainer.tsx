@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { CircularProgress } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { CHANNELS } from '../../constants/common';
 import { ContainerStyled, BoxStyled, ContentBoxStyled, ImageListStyled, TitleStyled } from './style';
 import { ImagesMetadata, Metadata, SeriesMetadata } from 'types/image';
@@ -18,6 +19,7 @@ export default function PatientViewImagesContainer(props: PatientContainerProps)
   const [loading, setLoading] = useState<boolean>(true);
   const [metadata, setMetadata] = useState<ImagesMetadata>();
   const [patientDetails, setPatientDetails] = useState<PatientDetails>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -76,6 +78,10 @@ export default function PatientViewImagesContainer(props: PatientContainerProps)
     }, {});
   };
 
+  const goToImageView = async (imageFilePath: string) => {
+    navigate(`/imageView`, { state: { imageFilePath: imageFilePath } });
+  };
+
   return (
     <ContainerStyled id={`patient-container-${patientId}`}>
       {loading || !metadata ? (
@@ -112,6 +118,7 @@ export default function PatientViewImagesContainer(props: PatientContainerProps)
                               sopUID={sopUID}
                               seriesMetadata={seriesMetadata}
                               title={seriesMetadata.imageFormat.toUpperCase()}
+                              goToImageView={goToImageView}
                             />
                           );
                         });
