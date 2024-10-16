@@ -15,7 +15,6 @@ export const BoxFilterSectionStyled = styled(Box)(({ theme }) => ({
   margin: theme.spacing(1),
   padding: theme.spacing(0),
   width: '35%',
-  backgroundColor: theme.palette.grey[100],
 }));
 
 export const BoxContentSectionStyled = styled(Box)(({ theme }) => ({

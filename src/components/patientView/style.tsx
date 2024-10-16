@@ -1,4 +1,11 @@
-import { Box, styled } from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
+
+export const TitleStyled = styled(Typography)(({ theme }) => ({
+  margin: theme.spacing(1),
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.primary.main,
+}));
 
 export const BoxStyled = styled(Box)(({ theme }) => ({
   display: 'flex',

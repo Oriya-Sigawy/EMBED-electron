@@ -1,4 +1,13 @@
-import { ImageListItem, Typography, styled } from '@mui/material';
+import { Box, ImageListItem, Typography, styled } from '@mui/material';
+
+export const ContainerStyled = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  borderColor: theme.palette.secondary.main,
+  borderWidth: 4,
+  margin: theme.spacing(1),
+}));
 
 export const TitleStyled = styled(Typography)(({ theme }) => ({
   display: 'flex',
@@ -7,6 +16,8 @@ export const TitleStyled = styled(Typography)(({ theme }) => ({
   fontSize: theme.typography.subtitle1.fontSize,
   fontFamily: theme.typography.fontFamily,
   fontWeight: theme.typography.fontWeightMedium,
+  backgroundColor: theme.palette.primary.dark,
+  color: theme.palette.primary.contrastText,
 }));
 
 export const ImageListItemStyled = styled(ImageListItem)(({ theme }) => ({
@@ -14,9 +25,7 @@ export const ImageListItemStyled = styled(ImageListItem)(({ theme }) => ({
   cursor: 'pointer',
   justifyContent: 'center',
   borderRadius: 4,
-  borderColor: theme.palette.primary.main,
   borderWidth: 1,
-  backgroundColor: theme.palette.primary.light,
   '&:hover': {
     boxShadow: '0 0 5px 2px rgba(0, 0, 0, 0.1)',
     borderRadius: 4,

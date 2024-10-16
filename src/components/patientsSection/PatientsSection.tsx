@@ -17,6 +17,7 @@ export default function PatientSection(props: PatientSectionProps) {
   const goToPatientView = (patientId: string) => {
     navigate(`/patient/${patientId}`);
   };
+
   return (
     <Box id="patients-section-container" sx={{ display: 'flex', flexWrap: 'wrap' }}>
       <Box id="patient-section-patients-container" sx={{ flexWrap: 'wrap', flexDirection: 'row', width: '100%' }}>
@@ -27,17 +28,13 @@ export default function PatientSection(props: PatientSectionProps) {
               patientId={patientId}
               showPatientID={true}
               goToPatientView={goToPatientView}
+              imageFormat="full"
             />
           ))}
       </Box>
-      <Box sx={{ display: 'flex', position: 'fixed', right: 0, bottom: 6, m: 2 }}>
+      <Box sx={{ display: 'flex', right: 0, bottom: 6, m: 2 }}>
         <Pagination count={pageCount} page={pageIndex} onChange={handlePageChange} size="small" />
       </Box>
     </Box>
   );
 }
-
-// width: 1024,
-// height: 768,
-// minWidth: 1024,
-// minHeight: 768,

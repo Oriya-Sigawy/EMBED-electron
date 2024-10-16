@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 import { CircularProgress } from '@mui/material';
 import { PatientImages, SeriesMetadata } from 'types/image';
-import { TitleStyled, ImageListItemStyled, ImageStyled } from './style';
+import { TitleStyled, ImageListItemStyled, ImageStyled, ContainerStyled } from './style';
 import { CHANNELS } from '../../constants/common';
 
 const { DDSM_AGENT } = window;
@@ -11,10 +11,11 @@ type ImageContainerProps = {
   seriesUID: string;
   sopUID: string;
   seriesMetadata: SeriesMetadata;
+  title?: string;
 };
 
 export default function ImageContainer(props: ImageContainerProps) {
-  const { seriesUID, sopUID, seriesMetadata } = props;
+  const { seriesUID, sopUID, seriesMetadata, title } = props;
   const [patientImage, setPatientImage] = useState<PatientImages>();
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -39,17 +40,17 @@ export default function ImageContainer(props: ImageContainerProps) {
   }, [props]);
 
   return (
-    <>
+    <ContainerStyled>
       {loading || !patientImage ? (
         <CircularProgress />
       ) : (
         <ImageListItemStyled>
           <TitleStyled variant="h6">
-            {patientImage.leftOrRightBreast} {patientImage.imageView}
+            {title ? title : `${patientImage.leftOrRightBreast} ${patientImage.imageView}`}
           </TitleStyled>
           <ImageStyled src={patientImage.imageFilePath} loading="lazy" />
         </ImageListItemStyled>
       )}
-    </>
+    </ContainerStyled>
   );
 }
