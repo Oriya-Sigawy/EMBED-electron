@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
-import { CircularProgress } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { PatientImages, SeriesMetadata } from 'types/image';
 import { TitleStyled, ImageListItemStyled, ImageStyled, ContainerStyled } from './style';
 import { CHANNELS } from '../../constants/common';
@@ -12,10 +12,11 @@ type ImageContainerProps = {
   sopUID: string;
   seriesMetadata: SeriesMetadata;
   title?: string;
+  goToImageView?: (imageFilePath: string) => void;
 };
 
 export default function ImageContainer(props: ImageContainerProps) {
-  const { seriesUID, sopUID, seriesMetadata, title } = props;
+  const { seriesUID, sopUID, seriesMetadata, title, goToImageView } = props;
   const [patientImage, setPatientImage] = useState<PatientImages>();
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -48,7 +49,13 @@ export default function ImageContainer(props: ImageContainerProps) {
           <TitleStyled variant="h6">
             {title ? title : `${patientImage.leftOrRightBreast} ${patientImage.imageView}`}
           </TitleStyled>
-          <ImageStyled src={patientImage.imageFilePath} loading="lazy" />
+          {goToImageView ? (
+            <Button key={sopUID} onClick={() => goToImageView(patientImage.imageFilePath)}>
+              <ImageStyled src={patientImage.imageFilePath} loading="lazy" />
+            </Button>
+          ) : (
+            <ImageStyled src={patientImage.imageFilePath} loading="lazy" />
+          )}
         </ImageListItemStyled>
       )}
     </ContainerStyled>
