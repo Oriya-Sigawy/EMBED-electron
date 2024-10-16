@@ -2,9 +2,8 @@ import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
-import PatientContainer from '../patientContainer/PatientContainer';
-import ClassificationSection from '../classificationSection/ClassificationSection';
-import { BoxClassificationSectionStyled, BoxContentSectionStyled, BoxStyled } from './style';
+import { BoxStyled, TitleStyled } from './style';
+import PatientViewImagesContainer from '../patientViewImagesContainer/PatientViewImagesContainer';
 
 export default function PatientView() {
   const { patientId } = useParams();
@@ -20,13 +19,9 @@ export default function PatientView() {
         <ArrowBack />
         Back
       </Button>
+      <TitleStyled variant="h5">{`Patient ${patientId.split('_')[1]}`}</TitleStyled>
       <BoxStyled>
-        <BoxClassificationSectionStyled>
-          <ClassificationSection patientId={patientId} />
-        </BoxClassificationSectionStyled>
-        <BoxContentSectionStyled>
-          <PatientContainer patientId={patientId} showPatientID={false} goToPatientView={() => {}} />
-        </BoxContentSectionStyled>
+        <PatientViewImagesContainer patientId={patientId} />
       </BoxStyled>
     </>
   );

@@ -1,11 +1,15 @@
 export type SeriesMetadata = {
   class: string;
+  imageFormat: string;
   imageView: string;
   leftOrRightBreast: string;
   sopUIDs: string[];
+  uid: string;
 };
 
-export type ImageMetadata = Record<string, SeriesMetadata>;
+// export type ImageMetadata = Record<string, SeriesMetadata>;
+export type ImageMetadata = SeriesMetadata[];
+export type ImagesMetadata = Record<string, SeriesMetadata[]>;
 
 export type Metadata = {
   imagesMetadata: ImageMetadata;

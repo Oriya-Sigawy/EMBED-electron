@@ -1,34 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CircularProgress } from '@mui/material';
 import { CHANNELS } from '../../constants/common';
 import { ContainerStyled, TitleButtonStyled, ImageListStyled } from './style';
-import { ImageMetadata, Metadata } from 'types/image';
+import { ImageMetadata, Metadata, SeriesMetadata } from 'types/image';
 import ImageContainer from '../imageContainer/ImageContainer';
 
 type PatientContainerProps = {
   patientId: string;
   showPatientID: boolean;
   goToPatientView: (patientId: string) => void;
+  imageFormat?: string;
 };
 
 const { DDSM_AGENT } = window;
 
 export default function PatientContainer(props: PatientContainerProps) {
-  const { patientId, showPatientID, goToPatientView } = props;
+  const { patientId, showPatientID, goToPatientView, imageFormat } = props;
   const [loading, setLoading] = useState<boolean>(true);
   const [metadata, setMetadata] = useState<ImageMetadata>();
   const [imageCount, setImageCount] = useState<number>(0);
 
   useEffect(() => {
-    const getMetadata = async (patientId: string) => {
-      const metadata: Metadata = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGES_DETAILS, patientId);
+    getImageMetadata(patientId);
+  }, [props]);
+
+  const getImageMetadata = useCallback(
+    async (patientId: string) => {
+      const data = {
+        patientId: patientId,
+        imageFormat: imageFormat || 'full',
+      };
+
+      const metadata: Metadata = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGES_DETAILS, data);
       setMetadata(metadata.imagesMetadata);
       setImageCount(metadata.imageCount);
       setLoading(false);
-    };
-
-    getMetadata(patientId);
-  }, [props]);
+    },
+    [props]
+  );
 
   return (
     <ContainerStyled id={`patient-container-${patientId}`}>
@@ -42,11 +51,15 @@ export default function PatientContainer(props: PatientContainerProps) {
       ) : (
         <ImageListStyled cols={imageCount}>
           {metadata &&
-            Object.keys(metadata).map((seriesUID) => {
-              const seriesMetadata = metadata[seriesUID];
+            metadata.map((seriesMetadata: SeriesMetadata) => {
               return seriesMetadata.sopUIDs.map((sopUID) => {
                 return (
-                  <ImageContainer key={sopUID} seriesUID={seriesUID} sopUID={sopUID} seriesMetadata={seriesMetadata} />
+                  <ImageContainer
+                    key={sopUID}
+                    seriesUID={seriesMetadata.uid}
+                    sopUID={sopUID}
+                    seriesMetadata={seriesMetadata}
+                  />
                 );
               });
             })}

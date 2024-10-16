@@ -139,7 +139,7 @@ export default function FilterSection(props: FilterSectionProps) {
           size="small"
           title="Apply"
           disabled={isDisabled}
-          sx={{ margin: 2 }}
+          sx={{ marginRight: 2, marginLeft: 2, marginBottom: 1 }}
           onClick={onApply}
         />
         <Button
@@ -147,7 +147,7 @@ export default function FilterSection(props: FilterSectionProps) {
           size="small"
           title="Reset"
           disabled={isDisabled}
-          sx={{ margin: 2 }}
+          sx={{ marginRight: 2, marginLeft: 2, marginBottom: 1 }}
           onClick={onReset}
         />
         <Button
@@ -155,7 +155,7 @@ export default function FilterSection(props: FilterSectionProps) {
           size="small"
           title="Save Query"
           disabled={isDisabled}
-          sx={{ margin: 2 }}
+          sx={{ marginRight: 2, marginLeft: 2, marginBottom: 1 }}
           onClick={() => setIsSaveQueryPopupOpen(true)}
         />
       </BoxFilterMenuStyled>

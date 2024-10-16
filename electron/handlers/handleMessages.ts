@@ -64,9 +64,13 @@ export default function handleMessages(): void {
     }
   });
 
-  ipcMain.handle(CHANNELS.PATIENT_IMAGES_DETAILS, async (event: Electron.IpcMainInvokeEvent, patientId: string) => {
+  ipcMain.handle(CHANNELS.PATIENT_IMAGES_DETAILS, async (event: Electron.IpcMainInvokeEvent, data) => {
     try {
-      const response = await axios.get(GET_IMAGES_DETAILS(patientId), { timeout: 60000, params: { format: 'full' } });
+      const { patientId, imageFormat } = data;
+      const response = await axios.get(GET_IMAGES_DETAILS(patientId), {
+        timeout: 60000,
+        params: { format: imageFormat },
+      });
       return response.data;
     } catch (error) {
       throw new Error(error);

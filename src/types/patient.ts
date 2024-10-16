@@ -14,6 +14,6 @@ export type Details = {
   subtlety: number;
 };
 
-export type PatientDetails = Record<string, Details[]>;
+export type PatientDetails = Record<string, Details>;
 
 export type PatientsDetails = Record<string, [{ [key: string]: string | number }]>;
