@@ -1,7 +1,12 @@
 {
   "name": "ddsm-electron",
+  "author": {
+    "name": "Yuval Shabat",
+    "email": "yuvalsh97@gmail.com"
+  },
+  "description": "A desktop app for exploring the CBIS-DDSM dataset",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

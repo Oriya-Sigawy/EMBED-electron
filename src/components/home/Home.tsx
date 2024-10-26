@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { CircularProgress } from '@mui/material';
-import { AbnormalityFilterObject, FilterObject, PatientFilterObject } from '../../constants/filter.constant';
+import { AbnormalityFilterObject, FilterObject, PatientFilterObject } from '../../types/filter';
 import { CHANNELS } from '../../constants/common';
 import FilterSection from '../filterSection/FilterSection';
 import PatientSection from '../patientsSection/PatientsSection';

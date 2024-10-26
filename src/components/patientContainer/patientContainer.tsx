@@ -4,13 +4,7 @@ import { CHANNELS } from '../../constants/common';
 import { ContainerStyled, TitleButtonStyled, ImageListStyled } from './style';
 import { ImageMetadata, Metadata, SeriesMetadata } from 'types/image';
 import ImageContainer from '../imageContainer/imageContainer';
-
-type PatientContainerProps = {
-  patientId: string;
-  showPatientID: boolean;
-  goToPatientView: (patientId: string) => void;
-  imageFormat?: string;
-};
+import { PatientContainerProps } from 'types/patient';
 
 const { DDSM_AGENT } = window;
 
@@ -32,7 +26,6 @@ export default function PatientContainer(props: PatientContainerProps) {
       };
 
       const metadata: Metadata = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGES_DETAILS, data);
-      console.log(metadata);
       setMetadata(metadata.imagesMetadata);
       setImageCount(metadata.imageCount);
       setLoading(false);

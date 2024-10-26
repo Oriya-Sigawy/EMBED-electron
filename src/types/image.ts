@@ -24,3 +24,11 @@ export type PatientImages = {
   leftOrRightBreast: string;
   imageFilePath: string;
 };
+
+export type ImageContainerProps = {
+  seriesUID: string;
+  sopUID: string;
+  seriesMetadata: SeriesMetadata;
+  title?: string;
+  goToImageView?: (imageFilePath: string) => void;
+};

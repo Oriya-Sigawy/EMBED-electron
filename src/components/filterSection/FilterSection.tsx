@@ -1,26 +1,13 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import FilterMenu from '../filterMenu/FilterMenu';
 import Button from '../button/Button';
-import {
-  FiltersMenuHeaders,
-  AbnormalityFilterMenuHeaders,
-  FilterObject,
-  AbnormalityFilterObject,
-  PatientFilterObject,
-} from '../../constants/filter.constant';
+import { FiltersMenuHeaders, AbnormalityFilterMenuHeaders } from '../../constants/filter.constant';
 import { BoxFilterMenuStyled } from './style';
 import QuerySaveDialog from '../querySaveDialog/QuerySaveDialog';
 import { CHANNELS } from '../../constants/common';
+import { FilterSectionProps } from '../../types/filter';
 
 const { DDSM_AGENT } = window;
-
-type FilterSectionProps = {
-  filtersMenuOptions: FilterObject;
-  abnormalityFilterMenuOptions: AbnormalityFilterObject;
-  patientIdsFilterMenuOptions: PatientFilterObject;
-  handleFilterApply: (filters) => void;
-  initialFilters?: { filterOptions?: any; abnormalityFilter?: any; patientIds?: any };
-};
 
 export default function FilterSection(props: FilterSectionProps) {
   const {
@@ -78,6 +65,7 @@ export default function FilterSection(props: FilterSectionProps) {
     setFiltersMenu({ options: filtersMenuOptions, selected: {} });
     setAbnormalityFilterMenu({ options: abnormalityFilterMenuOptions, selected: {} });
     setPatientIdsFilterMenu({ options: patientIdsFilterMenuOptions, selected: {} });
+    handleFilterApply({});
   }, [filtersMenuOptions, abnormalityFilterMenuOptions, patientIdsFilterMenuOptions]);
 
   const onQuerySave = useCallback(

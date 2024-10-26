@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 import { Button, CircularProgress } from '@mui/material';
-import { PatientImages, SeriesMetadata } from 'types/image';
+import { ImageContainerProps, PatientImages } from 'types/image';
 import { TitleStyled, ImageListItemStyled, ImageStyled, ContainerStyled } from './style';
 import { CHANNELS } from '../../constants/common';
 
 const { DDSM_AGENT } = window;
-
-type ImageContainerProps = {
-  seriesUID: string;
-  sopUID: string;
-  seriesMetadata: SeriesMetadata;
-  title?: string;
-  goToImageView?: (imageFilePath: string) => void;
-};
 
 export default function ImageContainer(props: ImageContainerProps) {
   const { seriesUID, sopUID, seriesMetadata, title, goToImageView } = props;

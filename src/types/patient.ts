@@ -17,3 +17,17 @@ export type Details = {
 export type PatientDetails = Record<string, Details>;
 
 export type PatientsDetails = Record<string, [{ [key: string]: string | number }]>;
+
+export type PatientContainerProps = {
+  patientId: string;
+  showPatientID: boolean;
+  goToPatientView: (patientId: string) => void;
+  imageFormat?: string;
+};
+
+export type PatientSectionProps = {
+  patientIds: string[];
+  pageCount: number;
+  pageIndex: number;
+  handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+};

@@ -2,13 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Pagination, Box } from '@mui/material';
 import PatientContainer from '../patientContainer/PatientContainer';
-
-type PatientSectionProps = {
-  patientIds: string[];
-  pageCount: number;
-  pageIndex: number;
-  handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
-};
+import { PatientSectionProps } from 'types/patient';
 
 export default function PatientSection(props: PatientSectionProps) {
   const { patientIds, pageCount, pageIndex, handlePageChange } = props;

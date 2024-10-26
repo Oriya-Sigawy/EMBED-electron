@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import { FilterMenu } from '../../types/filter';
-import { FilterMenuProps } from '../../constants/filter.constant';
+import { FilterMenuStyleProps } from '../../constants/filter.constant';
 import { InputLabelStyled, FormControlStyled } from './style';
 import { Tooltip, Typography } from '@mui/material';
 
@@ -43,7 +43,7 @@ export default function Filter(props: FilterMenu) {
             </Tooltip>
           );
         }}
-        MenuProps={FilterMenuProps}>
+        MenuProps={FilterMenuStyleProps}>
         {items &&
           items?.map((item) => (
             <MenuItem key={item} value={item} sx={{ fontSize: 4 }}>

@@ -1,14 +1,6 @@
 import React from 'react';
 import { Button as MuiButton } from '@mui/material';
-
-type ButtonProps = {
-  variant: 'text' | 'outlined' | 'contained';
-  size: 'small' | 'medium' | 'large';
-  title: string;
-  disabled: boolean;
-  sx: any;
-  onClick: () => void;
-};
+import { ButtonProps } from '../../types/common';
 
 export default function Button(prop: ButtonProps) {
   const { variant, size, title, disabled, sx, onClick } = prop;

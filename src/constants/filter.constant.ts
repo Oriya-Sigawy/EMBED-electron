@@ -1,6 +1,6 @@
 export const ITEM_HEIGHT = 48;
 export const ITEM_PADDING_TOP = 8;
-export const FilterMenuProps = {
+export const FilterMenuStyleProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
@@ -26,25 +26,3 @@ export const AbnormalityFilterMenuHeaders = {
   massShape: 'Mass Shape',
   massMargins: 'Mass Margins',
 };
-
-export interface FilterObject {
-  leftOrRightBreast: string[];
-  imageView: string[];
-  abnormalityId: string[];
-  abnormalityType: string[];
-  breastDensity: string[];
-  subtlety: string[];
-  assessment: string[];
-  pathology: string[];
-}
-
-export interface AbnormalityFilterObject {
-  calcType: string[];
-  calcDistribution: string[];
-  massShape: string[];
-  massMargins: string[];
-}
-
-export interface PatientFilterObject {
-  patientsIds: string[];
-}

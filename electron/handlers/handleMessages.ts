@@ -117,14 +117,14 @@ export default function handleMessages(): void {
     }
   });
 
-  ipcMain.handle(CHANNELS.LOAD_QUERIES, async (event: Electron.IpcMainInvokeEvent) => {
+  ipcMain.handle(CHANNELS.LOAD_QUERIES, async () => {
     try {
       const folderPath = path.join(__dirname, 'savedQueries');
       const files = fs.readdirSync(folderPath);
       const queries = files.map((file) => {
         const filePath = path.join(folderPath, file);
         const data = fs.readFileSync(filePath, 'utf-8');
-        return { query: file.replace('.json', ''), filters: JSON.parse(data) };
+        return { queryName: file.replace('.json', ''), filters: JSON.parse(data) };
       });
       return queries;
     } catch (error) {
