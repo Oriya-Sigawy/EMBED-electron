@@ -3,7 +3,7 @@ import { CircularProgress } from '@mui/material';
 import { CHANNELS } from '../../constants/common';
 import { ContainerStyled, TitleButtonStyled, ImageListStyled } from './style';
 import { ImageMetadata, Metadata, SeriesMetadata } from 'types/image';
-import ImageContainer from '../imageContainer/imageContainer';
+import ImageContainer from '../imageContainer/ImageContainer';
 import { PatientContainerProps } from 'types/patient';
 
 const { DDSM_AGENT } = window;
