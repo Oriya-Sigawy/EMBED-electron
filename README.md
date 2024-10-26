@@ -8,12 +8,12 @@ The goal is to allow simple access to mammography photos.
 To use the following project, please make sure you have the following installed:
 
 - [node](https://nodejs.org/en)
-- [Server](https://github.com/DDSM-CBIS/ddss-server)
+- [Server](https://github.com/DDSM-CBIS/ddsm-server)
 
 - Clone the repository:
 
 ```bash
-git clone https://github.com/DDSM-CBIS/ddss-electron.git
+git clone https://github.com/DDSM-CBIS/ddsm-electron.git
 ```
 
 ## Usage
