@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { CHANNELS } from '../../constants/common';
 import { ContainerStyled, BoxStyled, ContentBoxStyled, ImageListStyled, TitleStyled } from './style';
 import { ImagesMetadata, Metadata, SeriesMetadata } from 'types/image';
-import ImageContainer from '../imageContainer/imageContainer';
+import ImageContainer from '../imageContainer/ImageContainer';
 import { Details, PatientDetails } from 'types/patient';
 import ImageDetails from '../imageDetails/ImageDetails';
 
