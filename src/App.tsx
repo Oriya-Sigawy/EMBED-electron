@@ -8,10 +8,11 @@ import FavoritesQueriesView from './components/favoritesQueriesView/FavoritesQue
 import ImageView from './components/imageView/ImageView';
 
 const App = () => (
+   //each route loads its components.
   <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Router>
-      <Routes>
+    <CssBaseline />              
+    <Router>                     
+      <Routes>                   
         <Route path="/" element={<Home />} />
         <Route path="/patient/:patientId" element={<PatientView />} />
         <Route path="/favorites" element={<FavoritesQueriesView />} />
@@ -21,4 +22,4 @@ const App = () => (
   </ThemeProvider>
 );
 
-export default App;
+export default App;           //App is exported as the default component so it can be used in index.js, main.jsx.
