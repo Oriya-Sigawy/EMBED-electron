@@ -1,3 +1,4 @@
+//Bridges the Electron main process and React frontend.
 import { ipcRenderer, contextBridge } from 'electron';
 import { CHANNELS, CLIENT_AGENT_NAME } from './constants/common';
 

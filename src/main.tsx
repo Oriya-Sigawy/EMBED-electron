@@ -2,10 +2,11 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 
-const container = document.getElementById('root') as HTMLElement;   //ensuring that container will be treated as HTML element
+const container = document.getElementById('root') as HTMLElement;   //Mounts the App component to the DOM and get the element with the root ID as HTML.
 const root = createRoot(container);
 root.render(<App />);
 
+//defines how window.DDSM_AGENT should look like.
 declare global {
   interface Window {
     DDSM_AGENT?: {

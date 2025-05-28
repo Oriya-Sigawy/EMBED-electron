@@ -5,7 +5,8 @@
   asar: true,
   productName: 'CBIS-DDSM Analyzer',
   directories: {
-    output: 'release/${version}',
+    //output: 'release-mydb/${version}'
+    output: 'release/${version}',    
   },
   files: ['dist', 'dist-electron'],
   mac: {

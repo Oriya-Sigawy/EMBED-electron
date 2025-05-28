@@ -8,7 +8,7 @@ import { BoxStyled, BoxFilterSectionStyled, BoxContentSectionStyled } from './st
 import MenuDrawer from '../menuDrawer/MenuDrawer';
 import { useLocation } from 'react-router-dom';
 
-const { DDSM_AGENT } = window;
+const { DDSM_AGENT } = window;    //Electron’s IPC (Inter-Process Communication) that enables the frontend React code to send messages to the Electron backend. defines in preloads.ts
 
 export default function Home() {
   const location = useLocation();
@@ -30,19 +30,19 @@ export default function Home() {
   useEffect(() => {
     const getFilterOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.FILTER_OPTIONS);
-      const options: FilterObject = JSON.parse(response);
+      const options: FilterObject = JSON.parse(response);     //backend is returning JSON strings
       setFiltersMenuOptions(options);
     };
 
     const getAbnormalityFilterOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.ABNORMALITY_FILTER_OPTIONS);
-      const options: AbnormalityFilterObject = JSON.parse(response);
+      const options: AbnormalityFilterObject = JSON.parse(response);   //backend is returning JSON string
       setAbnormalityFilterMenuOptions(options);
     };
 
     const getPatientOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IDS);
-      const options: PatientFilterObject = JSON.parse(response);
+      const options: PatientFilterObject = JSON.parse(response);    //backend is returning JSON string
       setPatientIdsFilterMenuOptions(options);
 
       if (!patientsIds && options.patientsIds) {
@@ -58,7 +58,7 @@ export default function Home() {
 
   const onApplyFilter = useCallback(async (filters) => {
     const response = await DDSM_AGENT.send(CHANNELS.FILTER_PATIENTS, filters);
-    const patients: PatientFilterObject = JSON.parse(response);
+    const patients: PatientFilterObject = JSON.parse(response);   //backend is returning JSON string
     setPatientsIds(patients.patientsIds);
   }, []);
 
