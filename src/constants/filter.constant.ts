@@ -20,6 +20,7 @@ export const FiltersMenuHeaders = {
   abnormalityId: '#Abnormality',
 };
 
+//This block is for sub-filters of abnormalities (e.g., calcifications, mass shape)
 export const AbnormalityFilterMenuHeaders = {
   calcType: 'Classification Type',
   calcDistribution: 'Classification Distribution',

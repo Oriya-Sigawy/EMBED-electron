@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../../ddsm-analyzer/ddss-electron"
+		},
+		{
+			"path": "../../../../../../ddsm-analyzer/ddss-server"
+		}
+	]
+}

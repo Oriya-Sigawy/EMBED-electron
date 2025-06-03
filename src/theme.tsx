@@ -1,3 +1,4 @@
+//This file controls the visual styling of the app
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({

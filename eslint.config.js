@@ -1,3 +1,4 @@
+//Linting rules to maintain code quality.
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';

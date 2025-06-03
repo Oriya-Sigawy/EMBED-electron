@@ -1,4 +1,4 @@
-//Controls how your project is built with Vite
+//Controls how our project is built with Vite
 import { defineConfig } from 'vite';
 import path from 'node:path';
 import electron from 'vite-plugin-electron/simple';
