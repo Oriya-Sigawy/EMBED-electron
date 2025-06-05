@@ -1,3 +1,6 @@
+//Remove DDSM_AGENT and CHANNELS usage.
+//We need to understand how to retreive the images from AWS
+//maybe talk with the person that wrote it
 import React, { useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 import { Button, CircularProgress } from '@mui/material';
