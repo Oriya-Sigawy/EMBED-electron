@@ -44,7 +44,7 @@ export default function Home() {
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IDS);
       const options: PatientFilterObject = JSON.parse(response);    //backend is returning JSON string
       setPatientIdsFilterMenuOptions(options);
-
+        // this filter needs reconsider
       if (!patientsIds && options.patientsIds) {
         setPatientsIds(options.patientsIds);
       }
@@ -71,7 +71,7 @@ export default function Home() {
   }, [patientsIds]);
 
   const currentPatients = useMemo(() => {
-    const index = (pageIndex - 1) * 2;
+    const index = (pageIndex - 1) * 2;    //assuming 2 patients per page, need to change it to match our DB. maybe need another unique identifier for patients
     return patientsIds?.slice(index, index + 2);
   }, [patientsIds, pageIndex, handlePageChange]);
 

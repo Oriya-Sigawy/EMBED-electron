@@ -109,7 +109,7 @@ export default function FilterSection(props: FilterSectionProps) {
       </BoxFilterMenuStyled>
       <BoxFilterMenuStyled id="other-filter-menu-filter-section">
         <FilterMenu
-          title="Abnormality Paramsqq"
+          title="Abnormality Params"
           headers={AbnormalityFilterMenuHeaders}
           options={abnormalityFilterMenu.options}
           values={abnormalityFilterMenu.selected}

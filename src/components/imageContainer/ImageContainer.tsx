@@ -1,6 +1,4 @@
 //Remove DDSM_AGENT and CHANNELS usage.
-//We need to understand how to retreive the images from AWS
-//maybe talk with the person that wrote it
 import React, { useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 import { Button, CircularProgress } from '@mui/material';
@@ -17,6 +15,7 @@ export default function ImageContainer(props: ImageContainerProps) {
 
   useEffect(() => {
     const getPatientImages = async () => {
+      //need to put our unique key for each image
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGE, { seriesUID, sopUID });
       const base64Image = Buffer.from(response, 'binary').toString('base64');
       const imageId = parseInt(sopUID.split('.').pop() as string);
@@ -27,7 +26,7 @@ export default function ImageContainer(props: ImageContainerProps) {
         class: seriesMetadata.class,
         imageView: seriesMetadata.imageView,
         leftOrRightBreast: seriesMetadata.leftOrRightBreast,
-        imageFilePath: `data:image/jpeg;base64,${base64Image}`,
+        imageFilePath: `data:image/jpeg;base64,${base64Image}`, 
       });
 
       setLoading(false);
