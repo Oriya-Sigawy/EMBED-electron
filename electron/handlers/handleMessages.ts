@@ -1,3 +1,4 @@
+//In this file the IPC messages are send to the according channel.
 import { ipcMain } from 'electron';
 import axios from '../axios.js';
 import {

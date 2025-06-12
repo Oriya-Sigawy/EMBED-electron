@@ -1,3 +1,4 @@
+//This file tells the TypeScript compiler how to process and type-check the TypeScript files.
 {
   "compilerOptions": {
     "target": "es2022",

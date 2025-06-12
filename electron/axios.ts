@@ -1,3 +1,4 @@
+// This file configures an Axios instance the responsble for making HTTP requests for the Electron application.
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 

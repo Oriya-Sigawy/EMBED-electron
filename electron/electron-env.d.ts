@@ -1,3 +1,4 @@
+// This file provide type hints and safety to help TypeScript understand the environment.
 /// <reference types="vite-plugin-electron/electron-env" />
 
 declare namespace NodeJS {
