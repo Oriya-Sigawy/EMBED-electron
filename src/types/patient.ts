@@ -1,6 +1,7 @@
 export type PatientId = string;
 export type Patients = PatientId[];
 
+//FIXME - change to our data of the patient
 export type Details = {
   abnormalityId: number;
   abnormalityType: string;

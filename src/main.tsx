@@ -7,6 +7,7 @@ const root = createRoot(container);
 root.render(<App />);
 
 //defines how window.DDSM_AGENT should look like.
+//FIXME - change the name of DDSM_AGENT
 declare global {
   interface Window {
     DDSM_AGENT?: {

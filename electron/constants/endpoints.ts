@@ -1,3 +1,4 @@
+// FIXME : change constants names and urls to match the new API
 export const GET_FILTER_OPTIONS = 'filter/options';
 export const GET_ABNORMALITY_FILTER_OPTIONS = 'filter/abnormality-options';
 export const GET_PATIENT_IDS = 'filter/patients-ids';

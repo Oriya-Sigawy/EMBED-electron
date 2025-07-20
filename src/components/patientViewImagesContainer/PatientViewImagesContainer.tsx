@@ -3,7 +3,8 @@
 // -Groups images and metadata by imageView and leftOrRightBreast.
 // -Displays abnormalities and diagnostic info using the ImageDetails component.
 // -Renders a list of image containers (thumbnails) for the patient.
-
+// FIXME : change the channels's names if needed
+// FIXME : I'm not sure what else to change here, look again.
 import React, { useState, useEffect, useCallback } from 'react';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';

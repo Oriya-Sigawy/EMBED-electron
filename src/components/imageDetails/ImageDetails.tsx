@@ -1,3 +1,4 @@
+// FIXME : this is the image's data. put here whar relevant to our database.
 import React from 'react';
 import { DetailsBoxStyled, BackgroundBoxStyled, BodyStyled } from './style';
 import { Details } from 'types/patient';

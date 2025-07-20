@@ -13,6 +13,7 @@ export type FilterMenuProps = {
   onChange: (value: string[]) => void;
 };
 
+// FIXME - change it to the filters we want
 export interface FilterObject {
   leftOrRightBreast: string[];
   imageView: string[];
@@ -24,6 +25,7 @@ export interface FilterObject {
   pathology: string[];
 }
 
+//FIXME
 export interface AbnormalityFilterObject {
   calcType: string[];
   calcDistribution: string[];
@@ -31,10 +33,12 @@ export interface AbnormalityFilterObject {
   massMargins: string[];
 }
 
+// FIXME
 export interface PatientFilterObject {
   patientsIds: string[];
 }
 
+// FIXME - change it to the titles we want
 export type FilterSectionProps = {
   filtersMenuOptions: FilterObject;
   abnormalityFilterMenuOptions: AbnormalityFilterObject;

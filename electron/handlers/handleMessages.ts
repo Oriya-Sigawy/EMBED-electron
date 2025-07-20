@@ -1,4 +1,5 @@
 //In this file the IPC messages are send to the according channel.
+// FIXME : change imports, channels names and logic in case of need.
 import { ipcMain } from 'electron';
 import axios from '../axios.js';
 import {

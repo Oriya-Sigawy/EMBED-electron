@@ -1,3 +1,4 @@
+// FIXME : change the channels names if needed
 export const CHANNELS = {
   FILTER_OPTIONS: 'FILTER_OPTIONS',
   ABNORMALITY_FILTER_OPTIONS: 'ABNORMALITY_FILTER_OPTIONS',

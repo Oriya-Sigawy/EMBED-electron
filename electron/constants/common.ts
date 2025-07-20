@@ -1,3 +1,4 @@
+// FIXME : change constants names to match the new API
 export const CLIENT_AGENT_NAME = 'DDSM_AGENT';
 export const CHANNELS = {
   FILTER_OPTIONS: 'FILTER_OPTIONS',

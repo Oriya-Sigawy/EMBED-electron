@@ -1,4 +1,4 @@
-//Remove DDSM_AGENT and CHANNELS usage.
+// FIXME : change channels names if needed
 import React, { useEffect, useState } from 'react';
 import { Buffer } from 'buffer';
 import { Button, CircularProgress } from '@mui/material';
@@ -15,8 +15,9 @@ export default function ImageContainer(props: ImageContainerProps) {
 
   useEffect(() => {
     const getPatientImages = async () => {
-      //need to put our unique key for each image
+      // FIXME : need to put our unique key for each image
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGE, { seriesUID, sopUID });
+      // FIXME : need to make sure that the response is in binary format
       const base64Image = Buffer.from(response, 'binary').toString('base64');
       const imageId = parseInt(sopUID.split('.').pop() as string);
       setPatientImage({

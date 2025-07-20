@@ -1,6 +1,4 @@
-// Remove DDSM_AGENT and CHANNELS usage.
-// Replace getImageMetadata with an AWS-compatible function.
-// Ensure the metadata shape matches EMORY's format (you might need to adjust ImageMetadata and SeriesMetadata types).
+// FIXME : change the channel's name if needed
 import React, { useState, useEffect, useCallback } from 'react';
 import { CircularProgress } from '@mui/material';
 import { CHANNELS } from '../../constants/common';

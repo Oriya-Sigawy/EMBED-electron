@@ -1,3 +1,4 @@
+// FIXME : change the titles of the filters
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import FilterMenu from '../filterMenu/FilterMenu';
 import Button from '../button/Button';

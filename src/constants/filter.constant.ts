@@ -9,6 +9,7 @@ export const FilterMenuStyleProps = {
   },
 };
 
+// FIXME : change to our filter titles
 export const FiltersMenuHeaders = {
   leftOrRightBreast: 'Breast Side',
   imageView: 'View',
@@ -20,6 +21,7 @@ export const FiltersMenuHeaders = {
   abnormalityId: '#Abnormality',
 };
 
+// FIXME : change to our filter titles
 //This block is for sub-filters of abnormalities (e.g., calcifications, mass shape)
 export const AbnormalityFilterMenuHeaders = {
   calcType: 'Classification Type',
