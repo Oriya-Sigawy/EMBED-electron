@@ -41,11 +41,11 @@ export default function Home() {
       setAbnormalityFilterMenuOptions(options);
     };
 
+      // delete it
     const getPatientOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IDS);
-      const options: PatientFilterObject = JSON.parse(response);    //backend is returning JSON string
+      const options: PatientFilterObject = JSON.parse(response);   
       setPatientIdsFilterMenuOptions(options);
-        // this filter needs reconsider
       if (!patientsIds && options.patientsIds) {
         setPatientsIds(options.patientsIds);
       }

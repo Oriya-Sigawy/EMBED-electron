@@ -57,6 +57,7 @@ export default function handleMessages(): void {
     }
   });
 
+  // FIXME - delete
   ipcMain.handle(CHANNELS.PATIENT_IDS, async () => {
     try {
       const response = await axios.get(GET_PATIENT_IDS);
