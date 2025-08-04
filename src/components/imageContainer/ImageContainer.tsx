@@ -20,7 +20,7 @@ export default function ImageContainer(props: ImageContainerProps) {
       // FIXME : need to make sure that the response is in binary format
       const base64Image = Buffer.from(response, 'binary').toString('base64');
       const imageId = parseInt(sopUID.split('.').pop() as string);
-      setPatientImage({
+      setPatientImage({ 
         id: imageId,
         seriesUID: seriesUID,
         sopUID: sopUID,

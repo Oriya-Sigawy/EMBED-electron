@@ -41,7 +41,7 @@ export default function Home() {
       setAbnormalityFilterMenuOptions(options);
     };
 
-      // delete it
+    // change to imageId
     const getPatientOptions = async () => {
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IDS);
       const options: PatientFilterObject = JSON.parse(response);   
