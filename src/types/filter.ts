@@ -13,29 +13,24 @@ export type FilterMenuProps = {
   onChange: (value: string[]) => void;
 };
 
-// FIXME - add here the red filters
 export interface FilterObject {
-  leftOrRightBreast: string[];
-  imageView: string[];
-  abnormalityId: string[];
-  abnormalityType: string[];
-  breastDensity: string[];
-  subtlety: string[];
-  assessment: string[];
-  pathology: string[];
+  asses: string[];
+  side: string[];
+  massdens: string[];
+  type: string[];
+  path_severity: string[];
+  ViewPosition: string[];
 }
 
-//FIXME - add here the pink filters
 export interface AbnormalityFilterObject {
-  calcType: string[];
-  calcDistribution: string[];
-  massShape: string[];
-  massMargins: string[];
+  tissueden: string[];
+  massshape: string[];
+  massmargin: string[];
+  calcdistri: string[];
 }
 
-// FIXME- delete it
 export interface PatientFilterObject {
-  patientsIds: string[];
+  imageIds: string[];
 }
 
 export type FilterSectionProps = {

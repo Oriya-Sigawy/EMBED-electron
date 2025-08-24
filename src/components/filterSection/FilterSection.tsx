@@ -117,8 +117,8 @@ export default function FilterSection(props: FilterSectionProps) {
           onChange={(value) => handleFilterChange('abnormality', value)}
         />
         <FilterMenu
-          title="Patients"
-          headers={{ patientsIds: 'Patients Ids' }}
+          title="Images"
+          headers={{ imageIds: 'Images Ids' }}
           options={patientIdsFilterMenu.options}
           values={patientIdsFilterMenu.selected}
           onChange={(value) => handleFilterChange('patientsIds', value)}

@@ -9,23 +9,18 @@ export const FilterMenuStyleProps = {
   },
 };
 
-// FIXME : change to our filter titles
 export const FiltersMenuHeaders = {
-  leftOrRightBreast: 'Breast Side',
-  imageView: 'View',
-  abnormalityType: 'Abnormality',
-  breastDensity: 'Breast Density',
-  subtlety: 'Subtlety',
-  assessment: 'BIRADS Assessment',
-  pathology: 'Pathology',
-  abnormalityId: '#Abnormality',
-};
+  asses: 'Assessment',
+  side: 'Breast Side',
+  massdens: 'Mass Density',
+  type: 'Type',
+  path_severity: 'Pathology Severity',
+  ViewPosition: 'View Position'
+}; 
 
-// FIXME : change to our filter titles
-//This block is for sub-filters of abnormalities (e.g., calcifications, mass shape)
 export const AbnormalityFilterMenuHeaders = {
-  calcType: 'Classification Type',
-  calcDistribution: 'Classification Distribution',
-  massShape: 'Mass Shape',
-  massMargins: 'Mass Margins',
+  tissueden: 'Tissue Density',
+  massshape: 'Mass Shape',
+  massmargins: 'Mass Margins',
+  calcdistri: 'Calcification Distribution'
 };
