@@ -31,13 +31,13 @@ export default function PatientViewImagesContainer(props: PatientContainerProps)
   useEffect(() => {
     const getData = async () => {
       const fullImagesMetadata = await getImageMetadata(patientId, 'full');
-      const roiImagesMetadata = await getImageMetadata(patientId, 'ROI');
-      const croppedImagesMetadata = await getImageMetadata(patientId, 'cropped image');
+      // const roiImagesMetadata = await getImageMetadata(patientId, 'ROI');
+      // const croppedImagesMetadata = await getImageMetadata(patientId, 'cropped image');
 
       const groupedImages = groupByViewAndBreastSide([
         ...fullImagesMetadata,
-        ...roiImagesMetadata,
-        ...croppedImagesMetadata,
+        // ...roiImagesMetadata,
+        // ...croppedImagesMetadata,
       ]);
 
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_DETAILS, patientId);
