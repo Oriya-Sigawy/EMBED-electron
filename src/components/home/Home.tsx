@@ -52,8 +52,8 @@ export default function Home() {
       const options: PatientFilterObject = JSON.parse(response);   
       setPatientIdsFilterMenuOptions(options);
       console.log("Response for patient IDs filter options: ", options);
-      if (!patientsIds && options.imageIds) {
-        setPatientsIds(options.imageIds);
+      if (!patientsIds && options.patientsIds) {
+        setPatientsIds(options.patientsIds);
       }
       setLoading(false);
     };
@@ -66,7 +66,7 @@ export default function Home() {
   const onApplyFilter = useCallback(async (filters) => {
     const response = await DDSM_AGENT.send(CHANNELS.FILTER_PATIENTS, filters);
     const patients: PatientFilterObject = JSON.parse(response);   //backend is returning JSON string
-    setPatientsIds(patients.imageIds);
+    setPatientsIds(patients.patientsIds);
   }, []);
 
   const handlePageChange = useCallback((event, value) => {
