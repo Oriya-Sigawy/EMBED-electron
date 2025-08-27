@@ -88,6 +88,7 @@ export default function handleMessages(): void {
     }
   });
 
+  // FIXME - params need to be imageId
   ipcMain.handle(CHANNELS.PATIENT_IMAGE, async (event: Electron.IpcMainInvokeEvent, data) => {
     try {
       const { seriesUID, sopUID } = data;

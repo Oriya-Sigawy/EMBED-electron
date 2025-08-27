@@ -30,24 +30,30 @@ export default function Home() {
 
   useEffect(() => {
     const getFilterOptions = async () => {
+      console.log("Fetching filter options...");
       const response = await DDSM_AGENT.send(CHANNELS.FILTER_OPTIONS);
       const options: FilterObject = JSON.parse(response);     //backend is returning JSON strings
+      console.log("Response for filter options: ", options);
       setFiltersMenuOptions(options);
     };
 
     const getAbnormalityFilterOptions = async () => {
+      console.log("Fetching abnormality filter options...");
       const response = await DDSM_AGENT.send(CHANNELS.ABNORMALITY_FILTER_OPTIONS);
       const options: AbnormalityFilterObject = JSON.parse(response);   //backend is returning JSON string
+      console.log("Response for abnormality filter options: ", options);
       setAbnormalityFilterMenuOptions(options);
     };
 
     // change to imageId
     const getPatientOptions = async () => {
+      console.log("Fetching patient IDs filter options...");
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IDS);
       const options: PatientFilterObject = JSON.parse(response);   
       setPatientIdsFilterMenuOptions(options);
-      if (!patientsIds && options.patientsIds) {
-        setPatientsIds(options.patientsIds);
+      console.log("Response for patient IDs filter options: ", options);
+      if (!patientsIds && options.imageIds) {
+        setPatientsIds(options.imageIds);
       }
       setLoading(false);
     };
@@ -60,7 +66,7 @@ export default function Home() {
   const onApplyFilter = useCallback(async (filters) => {
     const response = await DDSM_AGENT.send(CHANNELS.FILTER_PATIENTS, filters);
     const patients: PatientFilterObject = JSON.parse(response);   //backend is returning JSON string
-    setPatientsIds(patients.patientsIds);
+    setPatientsIds(patients.imageIds);
   }, []);
 
   const handlePageChange = useCallback((event, value) => {

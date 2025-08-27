@@ -12,13 +12,12 @@ export default function ImageContainer(props: ImageContainerProps) {
   const { seriesUID, sopUID, seriesMetadata, title, goToImageView } = props;
   const [patientImage, setPatientImage] = useState<PatientImages>();
   const [loading, setLoading] = useState<boolean>(true);
-
+// FIXME - setPatientImage with our data 
   useEffect(() => {
     const getPatientImages = async () => {
-      // FIXME : need to put our unique key for each image
+      // FIXME : send imageID
       const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGE, { seriesUID, sopUID });
-      // FIXME : need to make sure that the response is in binary format
-      const base64Image = Buffer.from(response, 'binary').toString('base64');
+      const base64Image = Buffer.from(response, 'binary').toString('base64'); 
       const imageId = parseInt(sopUID.split('.').pop() as string);
       setPatientImage({ 
         id: imageId,
