@@ -44,8 +44,8 @@ export default function PatientViewImagesContainer(props: PatientContainerProps)
       const details: Details[] = response[patientId];
 
       const groupedDetails = details.reduce((groups, detail) => {
-        const { imageView, leftOrRightBreast } = detail;
-        const key = `${imageView}-${leftOrRightBreast}`;
+        const { viewPosition, side } = detail;
+        const key = `${viewPosition}-${side}`;
         if (!groups[key]) {
           groups[key] = [];
         }
@@ -102,16 +102,18 @@ export default function PatientViewImagesContainer(props: PatientContainerProps)
                 <ContentBoxStyled id={`${format}-content-container`}>
                   {patientDetails && patientDetails[format] && (
                     <ImageDetails
-                      abnormalityId={patientDetails[format][0].abnormalityId}
-                      abnormalityType={patientDetails[format][0].abnormalityType}
+                      anonymizedEMPI={patientDetails[format][0].anonymizedEMPI}
+                      anonymizedAccessionNumber={patientDetails[format][0].anonymizedAccessionNumber}
+                      tissuedensity={patientDetails[format][0].tissuedensity}
+                      calcificationDistribution={patientDetails[format][0].calcificationDistribution}
+                      type={patientDetails[format][0].type}
                       assessment={patientDetails[format][0].assessment}
-                      breastDensity={patientDetails[format][0].breastDensity}
+                      massDensity={patientDetails[format][0].massDensity}
                       massMargins={patientDetails[format][0].massMargins}
                       massShape={patientDetails[format][0].massShape}
-                      pathology={patientDetails[format][0].pathology}
-                      subtlety={patientDetails[format][0].subtlety}
-                      imageView={''}
-                      leftOrRightBreast={''}
+                      pathologySeverity={patientDetails[format][0].pathologySeverity}
+                      viewPosition={''}
+                      side={''}
                     />
                   )}
                   <ImageListStyled cols={2}>

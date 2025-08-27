@@ -1,18 +1,19 @@
 export type PatientId = string;
 export type Patients = PatientId[];
 
-//FIXME - change to our data of the patient
 export type Details = {
-  abnormalityId: number;
-  abnormalityType: string;
-  assessment: number;
-  breastDensity: number;
-  imageView: string;
-  leftOrRightBreast: string;
+  anonymizedEMPI: number;
+  anonymizedAccessionNumber: number;
+  tissuedensity: number;
+  calcificationDistribution: string;
+  type: string;
+  assessment: string;
+  massDensity: number;
+  viewPosition: string;
+  side: string;
   massMargins: string;
   massShape: string;
-  pathology: string;
-  subtlety: number;
+  pathologySeverity: string;
 };
 
 export type PatientDetails = Record<string, Details>;

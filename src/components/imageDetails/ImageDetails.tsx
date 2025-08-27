@@ -6,16 +6,18 @@ import { Details } from 'types/patient';
 //FIXME - add props according to our data
 export default function ImageDetails(props: Details) {
   return (
-    <DetailsBoxStyled id={`details-container-${props.imageView}-${props.leftOrRightBreast}`}>
+    <DetailsBoxStyled id={`details-container-${props.viewPosition}-${props.side}`}>
       <BackgroundBoxStyled>
-        <BodyStyled>{`Number of Abnormalities: ${props.abnormalityId}`}</BodyStyled>
-        <BodyStyled>{`Abnormality Type: ${props.abnormalityType}`}</BodyStyled>
+        <BodyStyled>{`Number of Abnormalities: ${props.anonymizedEMPI}`}</BodyStyled>
+        <BodyStyled>{`Accession Number: ${props.anonymizedAccessionNumber}`}</BodyStyled>
+        <BodyStyled>{`Tissue Density: ${props.tissuedensity}`}</BodyStyled>
+        <BodyStyled>{`Calcification Distribution: ${props.calcificationDistribution}`}</BodyStyled>
+        <BodyStyled>{`Abnormality Type: ${props.type}`}</BodyStyled>
         <BodyStyled>{`Assessment: ${props.assessment}`}</BodyStyled>
-        <BodyStyled>{`Breast Density: ${props.breastDensity}`}</BodyStyled>
+        <BodyStyled>{`Breast Density: ${props.massDensity}`}</BodyStyled>
         <BodyStyled>{`Mass Margins: ${props.massMargins}`}</BodyStyled>
         <BodyStyled>{`Mass Shape: ${props.massShape}`}</BodyStyled>
-        <BodyStyled>{`Pathology: ${props.pathology}`}</BodyStyled>
-        <BodyStyled>{`Subtlety: ${props.subtlety}`}</BodyStyled>
+        <BodyStyled>{`Pathology: ${props.pathologySeverity}`}</BodyStyled>
       </BackgroundBoxStyled>
     </DetailsBoxStyled>
   );
