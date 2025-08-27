@@ -3,6 +3,7 @@ import React from 'react';
 import { DetailsBoxStyled, BackgroundBoxStyled, BodyStyled } from './style';
 import { Details } from 'types/patient';
 
+//FIXME - add props according to our data
 export default function ImageDetails(props: Details) {
   return (
     <DetailsBoxStyled id={`details-container-${props.imageView}-${props.leftOrRightBreast}`}>
