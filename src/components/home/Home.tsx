@@ -17,7 +17,7 @@ export default function Home() {
   const [filtersMenuOptions, setFiltersMenuOptions] = useState<FilterObject>();
   const [abnormalityFilterMenuOptions, setAbnormalityFilterMenuOptions] = useState<AbnormalityFilterObject>();
   const [patientIdsFilterMenuOptions, setPatientIdsFilterMenuOptions] = useState<PatientFilterObject>();
-  const [patientsIds, setPatientsIds] = useState<number[]>();
+  const [imagesIds, setImagesIds] = useState<number[]>();
   const [pageIndex, setPageIndex] = useState<number>(1);
 
   const initialFilters = location.state?.filters;
@@ -52,8 +52,8 @@ export default function Home() {
       const options: PatientFilterObject = JSON.parse(response);   
       setPatientIdsFilterMenuOptions(options);
       console.log("Response for patient IDs filter options: ", options);
-      if (!patientsIds && options.patientsIds) {
-        setPatientsIds(options.patientsIds);
+      if (!imagesIds && options.imageIds) {
+        setImagesIds(options.imageIds);
       }
       setLoading(false);
     };
@@ -66,7 +66,7 @@ export default function Home() {
   const onApplyFilter = useCallback(async (filters) => {
     const response = await DDSM_AGENT.send(CHANNELS.FILTER_PATIENTS, filters);
     const patients: PatientFilterObject = JSON.parse(response);   //backend is returning JSON string
-    setPatientsIds(patients.patientsIds);
+    setImagesIds(patients.imageIds);
   }, []);
 
   const handlePageChange = useCallback((event, value) => {
@@ -74,13 +74,13 @@ export default function Home() {
   }, []);
 
   const pageCount = useMemo(() => {
-    return Math.ceil(patientsIds?.length / 2) || 1;
-  }, [patientsIds]);
+    return Math.ceil(imagesIds?.length / 2) || 1;
+  }, [imagesIds]);
 
   const currentPatients = useMemo(() => {
     const index = (pageIndex - 1) * 2;    //assuming 2 patients per page, need to change it to match our DB. maybe need another unique identifier for patients
-    return patientsIds?.slice(index, index + 2);
-  }, [patientsIds, pageIndex, handlePageChange]);
+    return imagesIds?.slice(index, index + 2);
+  }, [imagesIds, pageIndex, handlePageChange]);
 
   return (
     <>
