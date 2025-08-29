@@ -17,7 +17,7 @@ export default function Home() {
   const [filtersMenuOptions, setFiltersMenuOptions] = useState<FilterObject>();
   const [abnormalityFilterMenuOptions, setAbnormalityFilterMenuOptions] = useState<AbnormalityFilterObject>();
   const [patientIdsFilterMenuOptions, setPatientIdsFilterMenuOptions] = useState<PatientFilterObject>();
-  const [patientsIds, setPatientsIds] = useState<string[]>();
+  const [patientsIds, setPatientsIds] = useState<number[]>();
   const [pageIndex, setPageIndex] = useState<number>(1);
 
   const initialFilters = location.state?.filters;
@@ -100,7 +100,7 @@ export default function Home() {
             <CircularProgress />
           ) : (
             <PatientSection
-              patientIds={currentPatients}
+              imageIds={currentPatients}
               pageCount={pageCount}
               pageIndex={pageIndex}
               handlePageChange={handlePageChange}

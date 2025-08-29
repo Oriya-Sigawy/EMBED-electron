@@ -48,9 +48,9 @@ export default function handleMessages(): void {
     }
   });
 
-  ipcMain.handle(CHANNELS.PATIENT_DETAILS, async (event: Electron.IpcMainInvokeEvent, patientId: string) => {
+  ipcMain.handle(CHANNELS.PATIENT_DETAILS, async (event: Electron.IpcMainInvokeEvent, imageId: number) => {
     try {
-      const response = await axios.get(GET_PATIENT_DETAILS(patientId));
+      const response = await axios.get(GET_PATIENT_DETAILS(imageId));
       return response.data;
     } catch (error) {
       throw new Error(error);
@@ -68,8 +68,8 @@ export default function handleMessages(): void {
 
   ipcMain.handle(CHANNELS.PATIENT_IMAGES_DETAILS, async (event: Electron.IpcMainInvokeEvent, data) => {
     try {
-      const { patientId, imageFormat } = data;
-      const response = await axios.get(GET_IMAGES_DETAILS(patientId), {
+      const { patientId: imageId, imageFormat } = data;
+      const response = await axios.get(GET_IMAGES_DETAILS(imageId), {
         timeout: 60000,
         params: { format: imageFormat },
       });
@@ -91,11 +91,11 @@ export default function handleMessages(): void {
   // FIXME - params need to be imageId
   ipcMain.handle(CHANNELS.PATIENT_IMAGE, async (event: Electron.IpcMainInvokeEvent, data) => {
     try {
-      const { seriesUID, sopUID } = data;
-      const response = await axios.get(GET_IMAGE, {
+      const { imageId } = data;
+      console.log(`Fetching image with ID: ${imageId}`);
+      const response = await axios.get(GET_IMAGE(imageId), {
         responseType: 'arraybuffer',
         timeout: 60000,
-        params: { series_UID: seriesUID, sop_uid: sopUID },
       });
       return response.data;
     } catch (error) {

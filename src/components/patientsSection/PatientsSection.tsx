@@ -5,21 +5,21 @@ import PatientContainer from '../patientContainer/PatientContainer';
 import { PatientSectionProps } from 'types/patient';
 
 export default function PatientSection(props: PatientSectionProps) {
-  const { patientIds, pageCount, pageIndex, handlePageChange } = props;
+  const { imageIds: imageIds, pageCount, pageIndex, handlePageChange } = props;
   const navigate = useNavigate();
 
-  const goToPatientView = (patientId: string) => {
-    navigate(`/patient/${patientId}`);
+  const goToPatientView = (imageId: number) => {
+    navigate(`/patient/${imageId}`);
   };
 
   return (
     <Box id="patients-section-container" sx={{ display: 'flex', flexWrap: 'wrap' }}>
       <Box id="patient-section-patients-container" sx={{ flexWrap: 'wrap', flexDirection: 'row', width: '100%' }}>
-        {patientIds &&
-          patientIds.map((patientId) => (
+        {imageIds &&
+          imageIds.map((imageId) => (
             <PatientContainer
-              key={patientId}
-              patientId={patientId}
+              key={imageId}
+              imageId={imageId}
               showPatientID={true}
               goToPatientView={goToPatientView}
               imageFormat="full"

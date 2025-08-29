@@ -14,6 +14,7 @@ export type Details = {
   massMargins: string;
   massShape: string;
   pathologySeverity: string;
+  num_roi: number;
 };
 
 export type PatientDetails = Record<string, Details>;
@@ -21,14 +22,15 @@ export type PatientDetails = Record<string, Details>;
 export type PatientsDetails = Record<string, [{ [key: string]: string | number }]>;
 
 export type PatientContainerProps = {
-  patientId: string;
+  key: number;
+  imageId: number;
   showPatientID: boolean;
-  goToPatientView: (patientId: string) => void;
+  goToPatientView: (patientId: number) => void;
   imageFormat?: string;
 };
 
 export type PatientSectionProps = {
-  patientIds: string[];
+  imageIds: number[];
   pageCount: number;
   pageIndex: number;
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;

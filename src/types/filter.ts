@@ -30,7 +30,7 @@ export interface AbnormalityFilterObject {
 }
 
 export interface PatientFilterObject {
-  imageIds: string[];
+  imageIds: number[];
 }
 
 export type FilterSectionProps = {

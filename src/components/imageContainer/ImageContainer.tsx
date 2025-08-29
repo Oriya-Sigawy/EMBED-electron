@@ -9,24 +9,20 @@ import { CHANNELS } from '../../constants/common';
 const { DDSM_AGENT } = window;
 
 export default function ImageContainer(props: ImageContainerProps) {
-  const { seriesUID, sopUID, seriesMetadata, title, goToImageView } = props;
+  const { imageId, seriesMetadata, title, goToImageView } = props;
   const [patientImage, setPatientImage] = useState<PatientImages>();
   const [loading, setLoading] = useState<boolean>(true);
 // FIXME - setPatientImage with our data 
   useEffect(() => {
     const getPatientImages = async () => {
-      // FIXME : send imageID
-      const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGE, { seriesUID, sopUID });
-      const base64Image = Buffer.from(response, 'binary').toString('base64'); 
-      const imageId = parseInt(sopUID.split('.').pop() as string);
-      setPatientImage({ 
+      console.log(`Fetching image ${imageId}...`);
+      const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGE, { imageId });
+      const base64Image = Buffer.from(response, 'binary').toString('base64');
+      setPatientImage({
         id: imageId,
-        seriesUID: seriesUID,
-        sopUID: sopUID,
-        class: seriesMetadata.class,
-        imageView: seriesMetadata.imageView,
-        leftOrRightBreast: seriesMetadata.leftOrRightBreast,
-        imageFilePath: `data:image/jpeg;base64,${base64Image}`, 
+        ViewPosition: seriesMetadata.ViewPosition,
+        side: seriesMetadata.side,
+        imageFilePath: `data:image/jpeg;base64,${base64Image}`,
       });
 
       setLoading(false);
@@ -41,10 +37,10 @@ export default function ImageContainer(props: ImageContainerProps) {
       ) : (
         <ImageListItemStyled>
           <TitleStyled variant="h6">
-            {title ? title : `${patientImage.leftOrRightBreast} ${patientImage.imageView}`}
+            {title ? title : `${patientImage.side} ${patientImage.ViewPosition}`}
           </TitleStyled>
           {goToImageView ? (
-            <Button key={sopUID} onClick={() => goToImageView(patientImage.imageFilePath)}>
+            <Button key={imageId} onClick={() => goToImageView(patientImage.imageFilePath)}>
               <ImageStyled src={patientImage.imageFilePath} loading="lazy" />
             </Button>
           ) : (
