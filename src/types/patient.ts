@@ -1,5 +1,5 @@
-export type PatientId = string;
-export type Patients = PatientId[];
+export type ImageId = string;
+export type Patients = ImageId[];
 
 export type Details = {
   anonymizedEMPI: number;
@@ -9,7 +9,7 @@ export type Details = {
   type: string;
   assessment: string;
   massDensity: number;
-  viewPosition: string;
+  ViewPosition: string;
   side: string;
   massMargins: string;
   massShape: string;
@@ -24,8 +24,8 @@ export type PatientsDetails = Record<string, [{ [key: string]: string | number }
 export type PatientContainerProps = {
   key: number;
   imageId: number;
-  showPatientID: boolean;
-  goToPatientView: (patientId: number) => void;
+  showImageId: boolean;
+  goToPatientView: (imageId: number) => void;
   imageFormat?: string;
 };
 

@@ -1,4 +1,3 @@
-// FIXME : change the channel's name if needed
 import React, { useState, useEffect, useCallback } from 'react';
 import { CircularProgress } from '@mui/material';
 import { CHANNELS } from '../../constants/common';
@@ -7,10 +6,10 @@ import { SeriesMetadata } from 'types/image';
 import ImageContainer from '../imageContainer/ImageContainer';
 import { PatientContainerProps } from 'types/patient';
 
-const { DDSM_AGENT } = window;
+const { EMBED_AGENT } = window;
 
 export default function PatientContainer(props: PatientContainerProps) {
-  const { imageId, showPatientID, goToPatientView, imageFormat } = props;
+  const { imageId, showImageId, goToPatientView, imageFormat } = props;
   const [loading, setLoading] = useState<boolean>(true);
   const [metadata, setMetadata] = useState<SeriesMetadata>();
 
@@ -19,13 +18,14 @@ export default function PatientContainer(props: PatientContainerProps) {
   }, [props]);
 
   const getImageMetadata = useCallback(
-    async (patientId: number) => {
+    async (imageId: number) => {
       const data = {
-        patientId: patientId,
+        imageId,
         imageFormat: imageFormat || 'full',
       };
 
-      const metadata: SeriesMetadata = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGES_DETAILS, data);
+      console.log('Fetching metadata for imageId:', imageId, 'with format:', data.imageFormat);
+      const metadata: SeriesMetadata = await EMBED_AGENT.send(CHANNELS.PATIENT_IMAGES_DETAILS, data);
       setMetadata(metadata);
       setLoading(false);
     },
@@ -34,7 +34,7 @@ export default function PatientContainer(props: PatientContainerProps) {
 
   return (
     <ContainerStyled id={`patient-container-${imageId}`}>
-      {showPatientID && (
+      {showImageId && (
         <TitleButtonStyled id={`patient-title-${imageId}`} key={imageId} onClick={() => goToPatientView(imageId)}>
           Image {imageId}
         </TitleButtonStyled>
@@ -45,7 +45,6 @@ export default function PatientContainer(props: PatientContainerProps) {
         <ImageContainer
           imageId={imageId}
           seriesMetadata={metadata}
-
         />
       )}
     </ContainerStyled>

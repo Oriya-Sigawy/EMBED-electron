@@ -1,51 +1,37 @@
-// This component is used to display image data and patient metadata for a given patientId. Specifically, it:
-// -Fetches full, ROI, and cropped images via DDSM_AGENT.
-// -Groups images and metadata by imageView and leftOrRightBreast.
-// -Displays abnormalities and diagnostic info using the ImageDetails component.
-// -Renders a list of image containers (thumbnails) for the patient.
-// FIXME : change the channels's names if needed
-// FIXME : I'm not sure what else to change here, look again.
 import React, { useState, useEffect, useCallback } from 'react';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { CHANNELS } from '../../constants/common';
 import { ContainerStyled, BoxStyled, ContentBoxStyled, ImageListStyled, TitleStyled } from './style';
-import { ImagesMetadata, Metadata, SeriesMetadata } from 'types/image';
+import { SeriesMetadata } from 'types/image';
 import ImageContainer from '../imageContainer/ImageContainer';
 import { Details, PatientDetails } from 'types/patient';
 import ImageDetails from '../imageDetails/ImageDetails';
 
 type PatientContainerProps = {
-  patientId: string;
+  imageId: number;
 };
 
-const { DDSM_AGENT } = window;
+const { EMBED_AGENT } = window;
 
 export default function PatientViewImagesContainer(props: PatientContainerProps) {
-  const { patientId } = props;
+  const { imageId } = props;
   const [loading, setLoading] = useState<boolean>(true);
-  const [metadata, setMetadata] = useState<ImagesMetadata>();
+  const [metadata, setMetadata] = useState<SeriesMetadata>();
   const [patientDetails, setPatientDetails] = useState<PatientDetails>();
+  const [imageFormat, setImageFormat] = useState<string>();
   const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
-      const fullImagesMetadata = await getImageMetadata(patientId, 'full');
-      // const roiImagesMetadata = await getImageMetadata(patientId, 'ROI');
-      // const croppedImagesMetadata = await getImageMetadata(patientId, 'cropped image');
-
-      const groupedImages = groupByViewAndBreastSide([
-        ...fullImagesMetadata,
-        // ...roiImagesMetadata,
-        // ...croppedImagesMetadata,
-      ]);
-
-      const response = await DDSM_AGENT.send(CHANNELS.PATIENT_DETAILS, patientId);
-      const details: Details[] = response[patientId];
+      const response = await EMBED_AGENT.send(CHANNELS.PATIENT_DETAILS, imageId);
+      console.log('Raw patient details response:', response);
+      const details: Details[] = response[imageId];
+      console.log('Patient details for imageId', imageId, ':', details);
 
       const groupedDetails = details.reduce((groups, detail) => {
-        const { viewPosition, side } = detail;
-        const key = `${viewPosition}-${side}`;
+        const { ViewPosition, side } = detail;
+        const key = `${ViewPosition}-${side}`;
         if (!groups[key]) {
           groups[key] = [];
         }
@@ -53,30 +39,35 @@ export default function PatientViewImagesContainer(props: PatientContainerProps)
         return groups;
       }, {});
 
+      getImageMetadata(imageId);
+
+      console.log(`Fetched patient details for imageId ${imageId}:`, groupedDetails);
+
       setPatientDetails(groupedDetails);
-      setMetadata(groupedImages);
       setLoading(false);
     };
     getData();
   }, [props]);
 
   const getImageMetadata = useCallback(
-    async (patientId: string, imageFormat: string) => {
-      const data = {
-        patientId: patientId,
-        imageFormat: imageFormat || 'full',
-      };
-
-      const metadata: Metadata = await DDSM_AGENT.send(CHANNELS.PATIENT_IMAGES_DETAILS, data);
-      return metadata.imagesMetadata;
-    },
-    [props]
-  );
+      async (imageId: number) => {
+        const data = {
+          imageId,
+          imageFormat: imageFormat || 'full',
+        };
+  
+        console.log('Fetching metadata for imageId:', imageId, 'with format:', data.imageFormat);
+        const metadata: SeriesMetadata = await EMBED_AGENT.send(CHANNELS.PATIENT_IMAGES_DETAILS, data);
+        setMetadata(metadata);
+        setLoading(false);
+      },
+      [props]
+    );
 
   const groupByViewAndBreastSide = (images) => {
     return images.reduce((groups, image: SeriesMetadata) => {
-      const { imageView, leftOrRightBreast } = image;
-      const key = `${imageView}-${leftOrRightBreast}`;
+      const { ViewPosition, side } = image;
+      const key = `${ViewPosition}-${side}`;
       if (!groups[key]) {
         groups[key] = [];
       }
@@ -90,52 +81,39 @@ export default function PatientViewImagesContainer(props: PatientContainerProps)
   };
 
   return (
-    <ContainerStyled id={`patient-container-${patientId}`}>
+    <ContainerStyled id={`patient-container-${imageId}`}>
       {loading || !metadata ? (
         <CircularProgress />
       ) : (
         <>
-          {metadata &&
-            Object.keys(metadata).map((format) => (
-              <BoxStyled key={format}>
-                <TitleStyled id={`patient-title-${patientId}`}>{format.toUpperCase()}</TitleStyled>
-                <ContentBoxStyled id={`${format}-content-container`}>
-                  {patientDetails && patientDetails[format] && (
-                    <ImageDetails
-                      anonymizedEMPI={patientDetails[format][0].anonymizedEMPI}
-                      anonymizedAccessionNumber={patientDetails[format][0].anonymizedAccessionNumber}
-                      tissuedensity={patientDetails[format][0].tissuedensity}
-                      calcificationDistribution={patientDetails[format][0].calcificationDistribution}
-                      type={patientDetails[format][0].type}
-                      assessment={patientDetails[format][0].assessment}
-                      massDensity={patientDetails[format][0].massDensity}
-                      massMargins={patientDetails[format][0].massMargins}
-                      massShape={patientDetails[format][0].massShape}
-                      pathologySeverity={patientDetails[format][0].pathologySeverity}
-                      viewPosition={''}
-                      side={''}
-                    />
-                  )}
-                  <ImageListStyled cols={2}>
-                    {format &&
-                      metadata[format].map((seriesMetadata: SeriesMetadata) => {
-                        return seriesMetadata.sopUIDs.map((sopUID) => {
-                          return (
-                            <ImageContainer
-                              key={sopUID}
-                              seriesUID={seriesMetadata.uid}
-                              sopUID={sopUID}
-                              seriesMetadata={seriesMetadata}
-                              title={seriesMetadata.imageFormat.toUpperCase()}
-                              goToImageView={goToImageView}
-                            />
-                          );
-                        });
-                      })}
-                  </ImageListStyled>
-                </ContentBoxStyled>
-              </BoxStyled>
-            ))}
+          {
+            <BoxStyled key={imageFormat}>
+              <TitleStyled id={`patient-title-${imageId}`}>{imageFormat.toUpperCase()}</TitleStyled>
+              <ContentBoxStyled id={`${imageFormat}-content-container`}>
+                {patientDetails && patientDetails[imageFormat] && (
+                  <ImageDetails
+                    anonymizedEMPI={patientDetails[imageFormat][0].anonymizedEMPI}
+                    anonymizedAccessionNumber={patientDetails[imageFormat][0].anonymizedAccessionNumber}
+                    tissuedensity={patientDetails[imageFormat][0].tissuedensity}
+                    calcificationDistribution={patientDetails[imageFormat][0].calcificationDistribution}
+                    type={patientDetails[imageFormat][0].type}
+                    assessment={patientDetails[imageFormat][0].assessment}
+                    massDensity={patientDetails[imageFormat][0].massDensity}
+                    massMargins={patientDetails[imageFormat][0].massMargins}
+                    massShape={patientDetails[imageFormat][0].massShape}
+                    pathologySeverity={patientDetails[imageFormat][0].pathologySeverity}
+                    num_roi={patientDetails[imageFormat][0].num_roi}
+                    ViewPosition={''}
+                    side={''}
+                  />
+                )}
+                <ImageContainer
+                  imageId={imageId}
+                  seriesMetadata={metadata}
+                />
+              </ContentBoxStyled>
+            </BoxStyled>
+          }
         </>
       )}
     </ContainerStyled>

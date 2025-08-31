@@ -36,9 +36,9 @@ export interface PatientFilterObject {
 export type FilterSectionProps = {
   filtersMenuOptions: FilterObject;
   abnormalityFilterMenuOptions: AbnormalityFilterObject;
-  patientIdsFilterMenuOptions: PatientFilterObject;
+  imageIdsFilterMenuOptions: PatientFilterObject;
   handleFilterApply: (filters) => void;
-  initialFilters?: { filterOptions?: any; abnormalityFilter?: any; patientIds?: any };
+  initialFilters?: { filterOptions?: any; abnormalityFilter?: any; imageIds?: any };
 };
 
 export type SavedQuery = {
@@ -46,7 +46,7 @@ export type SavedQuery = {
   filters: {
     filterOptions: any;
     abnormalityFilter: any;
-    patientIds: any;
+    imageIds: any;
   };
 };
 
@@ -57,7 +57,7 @@ export type SavedQueryProps = {
   filters: {
     filterOptions: any;
     abnormalityFilter: any;
-    patientIds: any;
+    imageIds: any;
   };
   handleDelete: (queryName: string) => void;
   handleApply: (queryName: string) => void;

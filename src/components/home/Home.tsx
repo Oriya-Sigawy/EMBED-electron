@@ -1,4 +1,3 @@
-// FIXME : change names
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { CircularProgress } from '@mui/material';
 import { AbnormalityFilterObject, FilterObject, PatientFilterObject } from '../../types/filter';
@@ -9,14 +8,14 @@ import { BoxStyled, BoxFilterSectionStyled, BoxContentSectionStyled } from './st
 import MenuDrawer from '../menuDrawer/MenuDrawer';
 import { useLocation } from 'react-router-dom';
 
-const { DDSM_AGENT } = window;    //Electron’s IPC (Inter-Process Communication) that enables the frontend React code to send messages to the Electron backend. defines in preloads.ts
+const { EMBED_AGENT } = window;    //Electron’s IPC (Inter-Process Communication) that enables the frontend React code to send messages to the Electron backend. defines in preloads.ts
 
 export default function Home() {
   const location = useLocation();
   const [loading, setLoading] = useState<boolean>(true);
   const [filtersMenuOptions, setFiltersMenuOptions] = useState<FilterObject>();
   const [abnormalityFilterMenuOptions, setAbnormalityFilterMenuOptions] = useState<AbnormalityFilterObject>();
-  const [patientIdsFilterMenuOptions, setPatientIdsFilterMenuOptions] = useState<PatientFilterObject>();
+  const [imageIdsFilterMenuOptions, setImageIdsFilterMenuOptions] = useState<PatientFilterObject>();
   const [imagesIds, setImagesIds] = useState<number[]>();
   const [pageIndex, setPageIndex] = useState<number>(1);
 
@@ -31,7 +30,7 @@ export default function Home() {
   useEffect(() => {
     const getFilterOptions = async () => {
       console.log("Fetching filter options...");
-      const response = await DDSM_AGENT.send(CHANNELS.FILTER_OPTIONS);
+      const response = await EMBED_AGENT.send(CHANNELS.FILTER_OPTIONS);
       const options: FilterObject = JSON.parse(response);     //backend is returning JSON strings
       console.log("Response for filter options: ", options);
       setFiltersMenuOptions(options);
@@ -39,7 +38,7 @@ export default function Home() {
 
     const getAbnormalityFilterOptions = async () => {
       console.log("Fetching abnormality filter options...");
-      const response = await DDSM_AGENT.send(CHANNELS.ABNORMALITY_FILTER_OPTIONS);
+      const response = await EMBED_AGENT.send(CHANNELS.ABNORMALITY_FILTER_OPTIONS);
       const options: AbnormalityFilterObject = JSON.parse(response);   //backend is returning JSON string
       console.log("Response for abnormality filter options: ", options);
       setAbnormalityFilterMenuOptions(options);
@@ -48,9 +47,9 @@ export default function Home() {
     // change to imageId
     const getPatientOptions = async () => {
       console.log("Fetching patient IDs filter options...");
-      const response = await DDSM_AGENT.send(CHANNELS.PATIENT_IDS);
+      const response = await EMBED_AGENT.send(CHANNELS.IMAGE_IDS);
       const options: PatientFilterObject = JSON.parse(response);   
-      setPatientIdsFilterMenuOptions(options);
+      setImageIdsFilterMenuOptions(options);
       console.log("Response for patient IDs filter options: ", options);
       if (!imagesIds && options.imageIds) {
         setImagesIds(options.imageIds);
@@ -64,7 +63,7 @@ export default function Home() {
   }, []);
 
   const onApplyFilter = useCallback(async (filters) => {
-    const response = await DDSM_AGENT.send(CHANNELS.FILTER_PATIENTS, filters);
+    const response = await EMBED_AGENT.send(CHANNELS.FILTER_PATIENTS, filters);
     const patients: PatientFilterObject = JSON.parse(response);   //backend is returning JSON string
     setImagesIds(patients.imageIds);
   }, []);
@@ -90,7 +89,7 @@ export default function Home() {
           <FilterSection
             filtersMenuOptions={filtersMenuOptions}
             abnormalityFilterMenuOptions={abnormalityFilterMenuOptions}
-            patientIdsFilterMenuOptions={patientIdsFilterMenuOptions}
+            imageIdsFilterMenuOptions={imageIdsFilterMenuOptions}
             handleFilterApply={onApplyFilter}
             initialFilters={initialFilters}
           />

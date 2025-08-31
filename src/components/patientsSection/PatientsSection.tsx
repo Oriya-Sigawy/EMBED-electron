@@ -20,7 +20,7 @@ export default function PatientSection(props: PatientSectionProps) {
             <PatientContainer
               key={imageId}
               imageId={imageId}
-              showPatientID={true}
+              showImageId={true}
               goToPatientView={goToPatientView}
               imageFormat="full"
             />

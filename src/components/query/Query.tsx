@@ -46,12 +46,12 @@ export default function Query(props: SavedQueryProps) {
             ))}
           </>
         )}
-        {filters?.patientIds && Object.keys(filters?.patientIds).length > 0 && (
+        {filters?.imageIds && Object.keys(filters?.imageIds).length > 0 && (
           <>
             <Typography variant="h6">Patient Ids</Typography>
-            {Object.keys(filters?.patientIds).map((key) => (
+            {Object.keys(filters?.imageIds).map((key) => (
               <Typography variant="body2" key={key}>
-                {filters?.patientIds[key].join(', ')}
+                {filters?.imageIds[key].join(', ')}
               </Typography>
             ))}
           </>

@@ -6,7 +6,7 @@ import { BoxStyled, TitleStyled } from './style';
 import PatientViewImagesContainer from '../patientViewImagesContainer/PatientViewImagesContainer';
 
 export default function PatientView() {
-  const { patientId } = useParams();
+  const { imageId } = useParams();
   const navigate = useNavigate();
 
   const goToHome = () => {
@@ -19,9 +19,9 @@ export default function PatientView() {
         <ArrowBack />
         Back
       </Button>
-      <TitleStyled variant="h5">{`Patient ${patientId.split('_')[1]}`}</TitleStyled>
+      <TitleStyled variant="h5">{`Patient ${imageId}`}</TitleStyled>
       <BoxStyled>
-        <PatientViewImagesContainer patientId={patientId} />
+        <PatientViewImagesContainer imageId={+imageId} />
       </BoxStyled>
     </>
   );

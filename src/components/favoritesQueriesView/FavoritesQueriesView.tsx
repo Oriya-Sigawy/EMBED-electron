@@ -1,4 +1,3 @@
-// FIXME : change the name of DDSM_AGENT in all of the project
 import React, { useEffect } from 'react';
 import { Box, Button } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
@@ -8,14 +7,14 @@ import { ListStyled, TitleStyled } from './style';
 import { SavedQueries } from '../../types/filter';
 import Query from '../query/Query';
 
-const { DDSM_AGENT } = window;
+const { EMBED_AGENT } = window;
 
 export default function FavoritesQueriesView() {
   const [queries, setQueries] = React.useState<SavedQueries>([]);
   const navigate = useNavigate();
 
   const handleDelete = async (queryName: string) => {
-    await DDSM_AGENT.send(CHANNELS.DELETE_QUERY, queryName);
+    await EMBED_AGENT.send(CHANNELS.DELETE_QUERY, queryName);
   };
 
   const handleApply = async (queryName: string) => {
@@ -29,7 +28,7 @@ export default function FavoritesQueriesView() {
 
   useEffect(() => {
     const getQueries = async () => {
-      const response: SavedQueries = await DDSM_AGENT.send(CHANNELS.LOAD_QUERIES);
+      const response: SavedQueries = await EMBED_AGENT.send(CHANNELS.LOAD_QUERIES);
       setQueries(response);
     };
 

@@ -1,4 +1,3 @@
-  // FIXME change to our unique keys (instead of sopUIDs, uid)
 export type SeriesMetadata = {
   imageId: number;
   imageFormat: string;

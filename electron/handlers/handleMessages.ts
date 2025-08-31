@@ -1,5 +1,4 @@
 //In this file the IPC messages are send to the according channel.
-// FIXME : change imports, channels names and logic in case of need.
 import { ipcMain } from 'electron';
 import axios from '../axios.js';
 import {
@@ -7,7 +6,7 @@ import {
   GET_FILTER_OPTIONS,
   GET_IMAGES_DETAILS,
   GET_IMAGE,
-  GET_PATIENT_IDS,
+  GET_IMAGE_IDS,
   GET_PATIENTS,
   GET_PATIENT_DETAILS,
   GET_PATIENTS_BY_FILTER,
@@ -57,9 +56,9 @@ export default function handleMessages(): void {
     }
   });
 
-  ipcMain.handle(CHANNELS.PATIENT_IDS, async () => {
+  ipcMain.handle(CHANNELS.IMAGE_IDS, async () => {
     try {
-      const response = await axios.get(GET_PATIENT_IDS);
+      const response = await axios.get(GET_IMAGE_IDS);
       return response.data;
     } catch (error) {
       throw new Error(error);
@@ -68,7 +67,7 @@ export default function handleMessages(): void {
 
   ipcMain.handle(CHANNELS.PATIENT_IMAGES_DETAILS, async (event: Electron.IpcMainInvokeEvent, data) => {
     try {
-      const { patientId: imageId, imageFormat } = data;
+      const { imageId, imageFormat } = data;
       const response = await axios.get(GET_IMAGES_DETAILS(imageId), {
         timeout: 60000,
         params: { format: imageFormat },
@@ -88,7 +87,6 @@ export default function handleMessages(): void {
     }
   });
 
-  // FIXME - params need to be imageId
   ipcMain.handle(CHANNELS.PATIENT_IMAGE, async (event: Electron.IpcMainInvokeEvent, data) => {
     try {
       const { imageId } = data;

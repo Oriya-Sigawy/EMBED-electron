@@ -1,4 +1,3 @@
-// FIXME : change the titles of the filters
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import FilterMenu from '../filterMenu/FilterMenu';
 import Button from '../button/Button';
@@ -8,13 +7,13 @@ import QuerySaveDialog from '../querySaveDialog/QuerySaveDialog';
 import { CHANNELS } from '../../constants/common';
 import { FilterSectionProps } from '../../types/filter';
 
-const { DDSM_AGENT } = window;
+const { EMBED_AGENT } = window;
 
 export default function FilterSection(props: FilterSectionProps) {
   const {
     filtersMenuOptions,
     abnormalityFilterMenuOptions,
-    patientIdsFilterMenuOptions,
+    imageIdsFilterMenuOptions,
     handleFilterApply,
     initialFilters,
   } = props;
@@ -23,7 +22,7 @@ export default function FilterSection(props: FilterSectionProps) {
     options: {},
     selected: {},
   });
-  const [patientIdsFilterMenu, setPatientIdsFilterMenu] = useState({
+  const [imageIdsFilterMenu, setImageIdsFilterMenu] = useState({
     options: {},
     selected: {},
   });
@@ -35,14 +34,14 @@ export default function FilterSection(props: FilterSectionProps) {
       options: abnormalityFilterMenuOptions,
       selected: initialFilters?.abnormalityFilter || {},
     });
-    setPatientIdsFilterMenu({ options: patientIdsFilterMenuOptions, selected: initialFilters?.patientIds || {} });
-  }, [filtersMenuOptions, abnormalityFilterMenuOptions, patientIdsFilterMenuOptions, initialFilters]);
+    setImageIdsFilterMenu({ options: imageIdsFilterMenuOptions, selected: initialFilters?.imageIds || {} });
+  }, [filtersMenuOptions, abnormalityFilterMenuOptions, imageIdsFilterMenuOptions, initialFilters]);
 
   const handleFilterChange = useCallback((menu, value) => {
     const menus = {
       filters: setFiltersMenu,
       abnormality: setAbnormalityFilterMenu,
-      patientsIds: setPatientIdsFilterMenu,
+      imagesIds: setImageIdsFilterMenu,
     };
     menus[menu]((prev) => {
       const options = prev.options;
@@ -57,28 +56,28 @@ export default function FilterSection(props: FilterSectionProps) {
     const filters = {
       filterOptions: filtersMenu.selected || {},
       abnormalityFilter: abnormalityFilterMenu.selected || {},
-      patientIds: patientIdsFilterMenu.selected || {},
+      imageIds: imageIdsFilterMenu.selected || {},
     };
     handleFilterApply(filters);
-  }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
+  }, [filtersMenu.selected, abnormalityFilterMenu.selected, imageIdsFilterMenu.selected]);
 
   const onReset = useCallback(async () => {
     setFiltersMenu({ options: filtersMenuOptions, selected: {} });
     setAbnormalityFilterMenu({ options: abnormalityFilterMenuOptions, selected: {} });
-    setPatientIdsFilterMenu({ options: patientIdsFilterMenuOptions, selected: {} });
+    setImageIdsFilterMenu({ options: imageIdsFilterMenuOptions, selected: {} });
     handleFilterApply({});
-  }, [filtersMenuOptions, abnormalityFilterMenuOptions, patientIdsFilterMenuOptions]);
+  }, [filtersMenuOptions, abnormalityFilterMenuOptions, imageIdsFilterMenuOptions]);
 
   const onQuerySave = useCallback(
     async (queryName: string) => {
       const filters = {
         filterOptions: filtersMenu.selected || {},
         abnormalityFilter: abnormalityFilterMenu.selected || {},
-        patientIds: patientIdsFilterMenu.selected || {},
+        imageIds: imageIdsFilterMenu.selected || {},
       };
 
       if (queryName) {
-        const response = await DDSM_AGENT.send(CHANNELS.SAVE_QUERY, { queryName, filters });
+        const response = await EMBED_AGENT.send(CHANNELS.SAVE_QUERY, { queryName, filters });
         if (response === 'success') {
           alert(`Query saved successfully as "${queryName}.json" in the "savedQueries" folder.`);
         } else {
@@ -86,16 +85,16 @@ export default function FilterSection(props: FilterSectionProps) {
         }
       }
     },
-    [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]
+    [filtersMenu.selected, abnormalityFilterMenu.selected, imageIdsFilterMenu.selected]
   );
 
   const isDisabled = useMemo(() => {
     const filterEmpty = !filtersMenu.selected || Object.keys(filtersMenu.selected).length === 0;
     const abnormalityEmpty =
       !abnormalityFilterMenu.selected || Object.keys(abnormalityFilterMenu.selected).length === 0;
-    const patientIdsEmpty = !patientIdsFilterMenu.selected || Object.keys(patientIdsFilterMenu.selected).length === 0;
-    return filterEmpty && abnormalityEmpty && patientIdsEmpty;
-  }, [filtersMenu.selected, abnormalityFilterMenu.selected, patientIdsFilterMenu.selected]);
+    const imageIdsEmpty = !imageIdsFilterMenu.selected || Object.keys(imageIdsFilterMenu.selected).length === 0;
+    return filterEmpty && abnormalityEmpty && imageIdsEmpty;
+  }, [filtersMenu.selected, abnormalityFilterMenu.selected, imageIdsFilterMenu.selected]);
 
   return (
     <>
@@ -119,8 +118,8 @@ export default function FilterSection(props: FilterSectionProps) {
         <FilterMenu
           title="Images"
           headers={{ imageIds: 'Images Ids' }}
-          options={patientIdsFilterMenu.options}
-          values={patientIdsFilterMenu.selected}
+          options={imageIdsFilterMenu.options}
+          values={imageIdsFilterMenu.selected}
           onChange={(value) => handleFilterChange('patientsIds', value)}
         />
         <Button
