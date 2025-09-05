@@ -2,24 +2,21 @@ export type ImageId = string;
 export type Patients = ImageId[];
 
 export type Details = {
-  anonymizedEMPI: number;
-  anonymizedAccessionNumber: number;
-  tissuedensity: number;
-  calcificationDistribution: string;
+  imageId: number;
+  empiAnon: number;
+  accAnon: number;
+  tissueden: number;
+  calcdistri: string;
   type: string;
-  assessment: string;
-  massDensity: number;
+  asses: string;
   ViewPosition: string;
   side: string;
-  massMargins: string;
-  massShape: string;
-  pathologySeverity: string;
-  num_roi: number;
+  massmargin: string;
+  massshape: string;
+  massdens: string;
+  pathSeverity: string;
+  numRoi: number;
 };
-
-export type PatientDetails = Record<string, Details>;
-
-export type PatientsDetails = Record<string, [{ [key: string]: string | number }]>;
 
 export type PatientContainerProps = {
   key: number;
