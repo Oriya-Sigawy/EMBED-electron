@@ -29,16 +29,20 @@ export interface AbnormalityFilterObject {
   calcdistri: string[];
 }
 
-export interface PatientFilterObject {
+export interface EmpiAnonsFilterObject {
+  empiAnons: number[];
+}
+
+export interface ImageIds {
   imageIds: number[];
 }
 
 export type FilterSectionProps = {
   filtersMenuOptions: FilterObject;
   abnormalityFilterMenuOptions: AbnormalityFilterObject;
-  imageIdsFilterMenuOptions: PatientFilterObject;
+  empiAnonsFilterMenuOptions: EmpiAnonsFilterObject;
   handleFilterApply: (filters) => void;
-  initialFilters?: { filterOptions?: any; abnormalityFilter?: any; imageIds?: any };
+  initialFilters?: { filterOptions?: any; abnormalityFilter?: any; empiAnons?: any };
 };
 
 export type SavedQuery = {

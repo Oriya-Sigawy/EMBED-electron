@@ -6,6 +6,7 @@ import {
   GET_FILTER_OPTIONS,
   GET_IMAGES_DETAILS,
   GET_IMAGE,
+  GET_EMPI_ANONS,
   GET_IMAGE_IDS,
   GET_PATIENTS,
   GET_PATIENT_DETAILS,
@@ -63,6 +64,15 @@ export default function handleMessages(): void {
     } catch (error) {
       throw new Error(error);
     }
+  });
+
+  ipcMain.handle(CHANNELS.EMPI_ANONS, async () => {
+    try {
+      const response = await axios.get(GET_EMPI_ANONS);
+      return response.data;
+    } catch (error) {
+      throw new Error(error);
+    } 
   });
 
   ipcMain.handle(CHANNELS.PATIENT_IMAGES_DETAILS, async (event: Electron.IpcMainInvokeEvent, data) => {

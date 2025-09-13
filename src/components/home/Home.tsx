@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { CircularProgress } from '@mui/material';
-import { AbnormalityFilterObject, FilterObject, PatientFilterObject } from '../../types/filter';
+import { AbnormalityFilterObject, FilterObject, EmpiAnonsFilterObject, ImageIds } from '../../types/filter';
 import { CHANNELS } from '../../constants/common';
 import FilterSection from '../filterSection/FilterSection';
 import PatientSection from '../patientsSection/PatientsSection';
@@ -15,7 +15,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
   const [filtersMenuOptions, setFiltersMenuOptions] = useState<FilterObject>();
   const [abnormalityFilterMenuOptions, setAbnormalityFilterMenuOptions] = useState<AbnormalityFilterObject>();
-  const [imageIdsFilterMenuOptions, setImageIdsFilterMenuOptions] = useState<PatientFilterObject>();
+  const [empiAnonsFilterMenuOptions, setEmpiAnonsFilterMenuOptions] = useState<EmpiAnonsFilterObject>();
   const [imagesIds, setImagesIds] = useState<number[]>();
   const [pageIndex, setPageIndex] = useState<number>(1);
 
@@ -44,13 +44,17 @@ export default function Home() {
       setAbnormalityFilterMenuOptions(options);
     };
 
-    // change to imageId
-    const getPatientOptions = async () => {
+    const getEmpiAnons = async () => {
+      console.log("Fetching patient IDs filter options...");
+      const response = await EMBED_AGENT.send(CHANNELS.EMPI_ANONS);
+      const options: EmpiAnonsFilterObject = JSON.parse(response);   
+      setEmpiAnonsFilterMenuOptions(options);
+    };
+
+    const getImageIds = async () => {
       console.log("Fetching patient IDs filter options...");
       const response = await EMBED_AGENT.send(CHANNELS.IMAGE_IDS);
-      const options: PatientFilterObject = JSON.parse(response);   
-      setImageIdsFilterMenuOptions(options);
-      console.log("Response for patient IDs filter options: ", options);
+      const options: ImageIds = JSON.parse(response);
       if (!imagesIds && options.imageIds) {
         setImagesIds(options.imageIds);
       }
@@ -59,12 +63,13 @@ export default function Home() {
 
     getFilterOptions();
     getAbnormalityFilterOptions();
-    getPatientOptions();
+    getEmpiAnons();
+    getImageIds();
   }, []);
 
   const onApplyFilter = useCallback(async (filters) => {
     const response = await EMBED_AGENT.send(CHANNELS.FILTER_PATIENTS, filters);
-    const patients: PatientFilterObject = JSON.parse(response);   //backend is returning JSON string
+    const patients: ImageIds = JSON.parse(response);   //backend is returning JSON string
     setImagesIds(patients.imageIds);
   }, []);
 
@@ -89,7 +94,7 @@ export default function Home() {
           <FilterSection
             filtersMenuOptions={filtersMenuOptions}
             abnormalityFilterMenuOptions={abnormalityFilterMenuOptions}
-            imageIdsFilterMenuOptions={imageIdsFilterMenuOptions}
+            empiAnonsFilterMenuOptions={empiAnonsFilterMenuOptions}
             handleFilterApply={onApplyFilter}
             initialFilters={initialFilters}
           />

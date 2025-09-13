@@ -13,7 +13,7 @@ export default function FilterSection(props: FilterSectionProps) {
   const {
     filtersMenuOptions,
     abnormalityFilterMenuOptions,
-    imageIdsFilterMenuOptions,
+    empiAnonsFilterMenuOptions,
     handleFilterApply,
     initialFilters,
   } = props;
@@ -22,7 +22,7 @@ export default function FilterSection(props: FilterSectionProps) {
     options: {},
     selected: {},
   });
-  const [imageIdsFilterMenu, setImageIdsFilterMenu] = useState({
+  const [empiAnonsFilterMenu, setEmpiAnonsFilterMenu] = useState({
     options: {},
     selected: {},
   });
@@ -34,14 +34,14 @@ export default function FilterSection(props: FilterSectionProps) {
       options: abnormalityFilterMenuOptions,
       selected: initialFilters?.abnormalityFilter || {},
     });
-    setImageIdsFilterMenu({ options: imageIdsFilterMenuOptions, selected: initialFilters?.imageIds || {} });
-  }, [filtersMenuOptions, abnormalityFilterMenuOptions, imageIdsFilterMenuOptions, initialFilters]);
+    setEmpiAnonsFilterMenu({ options: empiAnonsFilterMenuOptions, selected: initialFilters?.empiAnons || {} });
+  }, [filtersMenuOptions, abnormalityFilterMenuOptions, empiAnonsFilterMenuOptions, initialFilters]);
 
   const handleFilterChange = useCallback((menu, value) => {
     const menus = {
       filters: setFiltersMenu,
       abnormality: setAbnormalityFilterMenu,
-      imagesIds: setImageIdsFilterMenu,
+      empiAnons: setEmpiAnonsFilterMenu,
     };
     menus[menu]((prev) => {
       const options = prev.options;
@@ -56,24 +56,24 @@ export default function FilterSection(props: FilterSectionProps) {
     const filters = {
       filterOptions: filtersMenu.selected || {},
       abnormalityFilter: abnormalityFilterMenu.selected || {},
-      imageIds: imageIdsFilterMenu.selected || {},
+      empiAnons: empiAnonsFilterMenu.selected || {},
     };
     handleFilterApply(filters);
-  }, [filtersMenu.selected, abnormalityFilterMenu.selected, imageIdsFilterMenu.selected]);
+  }, [filtersMenu.selected, abnormalityFilterMenu.selected, empiAnonsFilterMenu.selected]);
 
   const onReset = useCallback(async () => {
     setFiltersMenu({ options: filtersMenuOptions, selected: {} });
     setAbnormalityFilterMenu({ options: abnormalityFilterMenuOptions, selected: {} });
-    setImageIdsFilterMenu({ options: imageIdsFilterMenuOptions, selected: {} });
+    setEmpiAnonsFilterMenu({ options: empiAnonsFilterMenuOptions, selected: {} });
     handleFilterApply({});
-  }, [filtersMenuOptions, abnormalityFilterMenuOptions, imageIdsFilterMenuOptions]);
+  }, [filtersMenuOptions, abnormalityFilterMenuOptions, empiAnonsFilterMenuOptions]);
 
   const onQuerySave = useCallback(
     async (queryName: string) => {
       const filters = {
         filterOptions: filtersMenu.selected || {},
         abnormalityFilter: abnormalityFilterMenu.selected || {},
-        imageIds: imageIdsFilterMenu.selected || {},
+        empiAnons: empiAnonsFilterMenu.selected || {},
       };
 
       if (queryName) {
@@ -85,16 +85,16 @@ export default function FilterSection(props: FilterSectionProps) {
         }
       }
     },
-    [filtersMenu.selected, abnormalityFilterMenu.selected, imageIdsFilterMenu.selected]
+    [filtersMenu.selected, abnormalityFilterMenu.selected, empiAnonsFilterMenu.selected]
   );
 
   const isDisabled = useMemo(() => {
     const filterEmpty = !filtersMenu.selected || Object.keys(filtersMenu.selected).length === 0;
     const abnormalityEmpty =
       !abnormalityFilterMenu.selected || Object.keys(abnormalityFilterMenu.selected).length === 0;
-    const imageIdsEmpty = !imageIdsFilterMenu.selected || Object.keys(imageIdsFilterMenu.selected).length === 0;
+    const imageIdsEmpty = !empiAnonsFilterMenu.selected || Object.keys(empiAnonsFilterMenu.selected).length === 0;
     return filterEmpty && abnormalityEmpty && imageIdsEmpty;
-  }, [filtersMenu.selected, abnormalityFilterMenu.selected, imageIdsFilterMenu.selected]);
+  }, [filtersMenu.selected, abnormalityFilterMenu.selected, empiAnonsFilterMenu.selected]);
 
   return (
     <>
@@ -116,11 +116,11 @@ export default function FilterSection(props: FilterSectionProps) {
           onChange={(value) => handleFilterChange('abnormality', value)}
         />
         <FilterMenu
-          title="Images"
-          headers={{ imageIds: 'Images Ids' }}
-          options={imageIdsFilterMenu.options}
-          values={imageIdsFilterMenu.selected}
-          onChange={(value) => handleFilterChange('patientsIds', value)}
+          title="Anonymized EMPIs"
+          headers={{ empiAnons: 'Empi Anons' }}
+          options={empiAnonsFilterMenu.options}
+          values={empiAnonsFilterMenu.selected}
+          onChange={(value) => handleFilterChange('empiAnons', value)}
         />
         <Button
           variant="contained"
