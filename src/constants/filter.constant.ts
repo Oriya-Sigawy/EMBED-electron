@@ -14,13 +14,13 @@ export const FiltersMenuHeaders = {
   side: 'Breast Side',
   massdens: 'Mass Density',
   type: 'Type',
-  path_severity: 'Pathology Severity',
+  pathSeverity: 'Pathology Severity',
   ViewPosition: 'View Position'
 }; 
 
 export const AbnormalityFilterMenuHeaders = {
   tissueden: 'Tissue Density',
   massshape: 'Mass Shape',
-  massmargins: 'Mass Margins',
+  massmargin: 'Mass Margins',
   calcdistri: 'Calcification Distribution'
 };
