@@ -2,9 +2,10 @@ import React from 'react';
 import Filter from '../filter/Filter';
 import { FilterMenuProps } from '../../types/filter';
 import { BoxStyled, TitleStyled } from './style';
+import { namespace } from 'axios-retry';
 
 export default function FilterMenu(props: FilterMenuProps) {
-  const { title, headers, options, values, onChange } = props;
+  const { title, headers, options, values, onChange, names } = props;
 
   const handleChange = (key, value) => {
     let newValues = { ...values };
@@ -26,6 +27,7 @@ export default function FilterMenu(props: FilterMenuProps) {
           items={options ? options[key] : []}
           value={(values && values[key]) || []}
           onChange={(value) => handleChange(key, value)}
+          valueNames={names ? names[key] : null}
         />
       ))}
     </BoxStyled>

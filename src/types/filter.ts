@@ -3,6 +3,7 @@ export type FilterMenu = {
   items: string[];
   value: string[];
   onChange: (event) => void;
+  valueNames?: { [key: string]: string };
 };
 
 export type FilterMenuProps = {
@@ -11,6 +12,7 @@ export type FilterMenuProps = {
   options: any;
   values: any;
   onChange: (value: string[]) => void;
+  names?: { [key: string]: { [key: string]: string } };
 };
 
 export interface FilterObject {

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import FilterMenu from '../filterMenu/FilterMenu';
 import Button from '../button/Button';
-import { FiltersMenuHeaders, AbnormalityFilterMenuHeaders } from '../../constants/filter.constant';
+import { FiltersMenuHeaders, FiltersMenuNames, AbnormalityFilterMenuHeaders, AbnormalityFilterMenuNames } from '../../constants/filter.constant';
 import { BoxFilterMenuStyled } from './style';
 import QuerySaveDialog from '../querySaveDialog/QuerySaveDialog';
 import { CHANNELS } from '../../constants/common';
@@ -105,6 +105,7 @@ export default function FilterSection(props: FilterSectionProps) {
           options={filtersMenu.options}
           values={filtersMenu.selected}
           onChange={(value) => handleFilterChange('filters', value)}
+          names={FiltersMenuNames}
         />
       </BoxFilterMenuStyled>
       <BoxFilterMenuStyled id="other-filter-menu-filter-section">
@@ -114,6 +115,7 @@ export default function FilterSection(props: FilterSectionProps) {
           options={abnormalityFilterMenu.options}
           values={abnormalityFilterMenu.selected}
           onChange={(value) => handleFilterChange('abnormality', value)}
+          names={AbnormalityFilterMenuNames}
         />
         <FilterMenu
           title="Anonymized EMPIs"

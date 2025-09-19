@@ -10,7 +10,7 @@ import { InputLabelStyled, FormControlStyled } from './style';
 import { Tooltip, Typography } from '@mui/material';
 
 export default function Filter(props: FilterMenu) {
-  const { title, items, value, onChange } = props;
+  const { title, items, value, onChange, valueNames } = props;
 
   const handleChange = (event: SelectChangeEvent<typeof value>) => {
     const {
@@ -46,9 +46,9 @@ export default function Filter(props: FilterMenu) {
         MenuProps={FilterMenuStyleProps}>
         {items &&
           items?.map((item) => (
-            <MenuItem key={item} value={item} sx={{ fontSize: 4 }}>
+            <MenuItem key={item} value={item} sx={{ fontSize: 2 }}>
               <Checkbox checked={value?.indexOf(item) > -1} size="small" />
-              <ListItemText primary={item} sx={{ fontSize: 4 }} />
+              <ListItemText primary={valueNames?.[item] ? `${item}: ${valueNames[item]}` : item} sx={{ fontSize: 2 }} />
             </MenuItem>
           ))}
       </Select>
