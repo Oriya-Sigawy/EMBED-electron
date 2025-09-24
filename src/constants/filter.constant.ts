@@ -122,5 +122,3 @@ export const AbnormalityFilterMenuNames = {
     'C': 'Clustered',
   }
 };
-
-
