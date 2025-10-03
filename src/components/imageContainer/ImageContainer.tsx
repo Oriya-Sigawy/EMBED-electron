@@ -11,7 +11,6 @@ export default function ImageContainer(props: ImageContainerProps) {
   const { imageId, seriesMetadata, title, goToImageView } = props;
   const [patientImage, setPatientImage] = useState<PatientImages>();
   const [loading, setLoading] = useState<boolean>(true);
-// FIXME - setPatientImage with our data 
   useEffect(() => {
     const getPatientImages = async () => {
       console.log(`Fetching image ${imageId}...`);
@@ -29,15 +28,13 @@ export default function ImageContainer(props: ImageContainerProps) {
     getPatientImages();
   }, [props]);
 
+  // TODO: patientImage.side / .ViewPosition can be undefined here, handle that case
   return (
     <ContainerStyled>
       {loading || !patientImage ? (
         <CircularProgress />
       ) : (
         <ImageListItemStyled>
-          <TitleStyled variant="h6">
-            {title ? title : `${patientImage.side} ${patientImage.ViewPosition}`}
-          </TitleStyled>
           {goToImageView ? (
             <Button key={imageId} onClick={() => goToImageView(patientImage.imageFilePath)}>
               <ImageStyled src={patientImage.imageFilePath} loading="lazy" />

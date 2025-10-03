@@ -13,7 +13,7 @@ export const DetailsBoxStyled = styled(Box)(({ theme }) => ({
   flexWrap: 'wrap',
   margin: theme.spacing(1),
   padding: theme.spacing(1),
-  width: '30%',
+  width: '70%',
 }));
 
 export const BackgroundBoxStyled = styled(Box)(({ theme }) => ({
